@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ёжик и Друзья — Тамагочи</title>
+    <style>
+      /* ========== СБРОС И БАЗОВЫЕ СТИЛИ ========== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        user-select: none;
+      }
+
+      /* ========== ИГРОВОЕ ОКНО ========== */
+      .game-container {
+        width: 100%;
+        max-width: 600px;
+        height: 100vh;
+        max-height: 800px;
+        background: linear-gradient(180deg, #a8e6cf 0%, #88d8b0 100%);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* ========== КОМНАТА ========== */
+      .room {
+        flex: 1;
+        position: relative;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+      }
+
+      /* Пол комнаты */
+      .floor {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 35%;
+        background: linear-gradient(180deg, #dfe6e9 0%, #b2bec3 100%);
+        border-top: 4px solid #636e72;
+      }
+
+      /* Аквариум */
+      .aquarium {
+        position: absolute;
+        right: 20px;
+        bottom: 35%;
+        width: 120px;
+        height: 90px;
+        background: linear-gradient(180deg, #74b9ff 0%, #0984e3 100%);
+        border: 4px solid #2d3436;
+        border-radius: 8px;
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+        overflow: hidden;
+      }
+
+      .aquarium::before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 4px;
+      }
+
+      /* Рыбки */
+      .fish {
+        font-size: 24px;
+        position: absolute;
+        animation: swim 8s ease-in-out infinite;
+      }
+
+      .fish:nth-child(1) {
+        top: 30%;
+        left: 20%;
+        animation-delay: 0s;
+      }
+
+      .fish:nth-child(2) {
+        top: 50%;
+        left: 60%;
+        animation-delay: -3s;
+      }
+
+      .fish:nth-child(3) {
+        top: 65%;
+        left: 30%;
+        animation-delay: -5s;
+      }
+
+      @keyframes swim {
+        0%,
+        100% {
+          transform: translateX(0) scaleX(1);
+        }
+        25% {
+          transform: translateX(60px) scaleX(1);
+        }
+        50% {
+          transform: translateX(80px) scaleX(-1);
+        }
+        75% {
+          transform: translateX(20px) scaleX(-1);
+        }
+      }
+
+      /* Пузырьки в аквариуме */
+      .bubble {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        animation: bubble-rise 3s ease-in infinite;
+      }
+
+      .bubble:nth-child(4) {
+        width: 6px;
+        height: 6px;
+        left: 20%;
+        animation-delay: 0s;
+      }
+      .bubble:nth-child(5) {
+        width: 8px;
+        height: 8px;
+        left: 50%;
+        animation-delay: 1s;
+      }
+      .bubble:nth-child(6) {
+        width: 5px;
+        height: 5px;
+        left: 70%;
+        animation-delay: 2s;
+      }
+
+      @keyframes bubble-rise {
+        0% {
+          bottom: 0;
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          bottom: 100%;
+          opacity: 0;
+        }
+      }
+
+      /* ========== ПЕРСОНАЖИ ========== */
+      .character {
+        font-size: 64px;
+        position: absolute;
+        bottom: 35%;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      /* Ёжик — главный герой по центру */
+      .hedgehog {
+        bottom: 38%;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: breathe 3s ease-in-out infinite;
+      }
+
+      .hedgehog:hover {
+        animation-play-state: paused;
+      }
+
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: translateX(-50%) scale(1);
+        }
+        50% {
+          transform: translateX(-50%) scale(1.05);
+        }
+      }
+
+      /* Кот Том — слева */
+      .cat {
+        left: 15%;
+        bottom: 36%;
+        animation: breathe-offset 3.5s ease-in-out infinite;
+        animation-delay: 0.5s;
+      }
+
+      @keyframes breathe-offset {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+      }
+
+      /* Собака Бен — справа */
+      .dog {
+        right: 25%;
+        bottom: 36%;
+        animation: breathe-offset 4s ease-in-out infinite;
+        animation-delay: 1s;
+      }
+
+      /* Анимация прыжка */
+      .bounce {
+        animation: bounce 0.5s ease !important;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-30px) scale(1.1);
+        }
+      }
+
+      /* ========== ПАНЕЛЬ СТАТУСОВ ========== */
+      .status-panel {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px 20px;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #2d3436;
+        margin-bottom: 12px;
+      }
+
+      .stats {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .stat-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* ========== ПАНЕЛЬ КВЕСТОВ ========== */
+      .quest-panel {
+        background: linear-gradient(135deg, #fd79a8, #e84393);
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        color: white;
+        display: none;
+      }
+
+      .quest-panel.active {
+        display: block;
+        animation: quest-appear 0.5s ease;
+      }
+
+      @keyframes quest-appear {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .quest-title {
+        font-size: 12px;
+        font-weight: 600;
+        opacity: 0.9;
+        margin-bottom: 4px;
+      }
+
+      .quest-text {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .quest-progress {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 6px;
+      }
+
+      .quest-progress-bar {
+        height: 100%;
+        background: white;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+        width: 0%;
+      }
+
+      .quest-reward {
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      .quest-completed {
+        background: linear-gradient(135deg, #00b894, #00cec9) !important;
+      }
+
+      /* Уведомление о награде */
+      .reward-notification {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #fdcb6e, #f39c12);
+        padding: 20px 30px;
+        border-radius: 16px;
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        z-index: 300;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .reward-notification.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      .stat-icon {
+        font-size: 20px;
+        width: 30px;
+        text-align: center;
+      }
+
+      .stat-bar-container {
+        flex: 1;
+        height: 16px;
+        background: #dfe6e9;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .stat-bar {
+        height: 100%;
+        border-radius: 8px;
+        transition:
+          width 0.5s ease,
+          background 0.3s ease;
+      }
+
+      .stat-bar.hunger {
+        background: linear-gradient(90deg, #e17055, #d63031);
+      }
+      .stat-bar.energy {
+        background: linear-gradient(90deg, #ffeaa7, #fdcb6e);
+      }
+      .stat-bar.mood {
+        background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+      }
+
+      .stat-value {
+        font-size: 12px;
+        font-weight: 600;
+        color: #636e72;
+        width: 40px;
+        text-align: right;
+      }
+
+      /* ========== ПАНЕЛЬ УПРАВЛЕНИЯ ========== */
+      .controls {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 16px;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: inherit;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-icon {
+        font-size: 28px;
+      }
+
+      .btn-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #636e72;
+      }
+
+      .btn.sleeping {
+        background: linear-gradient(145deg, #a29bfe, #6c5ce7);
+      }
+
+      .btn.sleeping .btn-label {
+        color: white;
+      }
+
+      /* ========== ВСПЛЫВАЮЩИЕ ЭМДЗИ ========== */
+      .popup-emoji {
+        position: absolute;
+        font-size: 40px;
+        animation: popup 1s ease forwards;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      @keyframes popup {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(0.5);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-30px) scale(1.2);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-60px) scale(1);
+        }
+      }
+
+      /* ========== РЕЧНОЙ ПУЗЫРЬ (SPEECH BUBBLE) ========== */
+      .speech-bubble {
+        position: absolute;
+        bottom: 55%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 16px;
+        color: #2d3436;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 50;
+        max-width: 200px;
+        text-align: center;
+      }
+
+      .speech-bubble::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 10px solid transparent;
+        border-top-color: white;
+      }
+
+      .speech-bubble.show {
+        opacity: 1;
+      }
+
+      /* Речевые пузыри кота и собаки */
+      .cat-bubble {
+        bottom: 50%;
+        left: 15%;
+        transform: none;
+        max-width: 80px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .cat-bubble::after {
+        left: 30%;
+      }
+
+      .dog-bubble {
+        bottom: 50%;
+        right: 25%;
+        left: auto;
+        transform: none;
+        max-width: 80px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .dog-bubble::after {
+        left: 70%;
+      }
+
+      /* ========== ЗАТЕМНЕНИЕ (РЕЖИМ СНА) ========== */
+      .night-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(20, 20, 60, 0.85);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+        z-index: 40;
+      }
+
+      .night-overlay.active {
+        opacity: 1;
+      }
+
+      /* ========== ЭКРАН GAME OVER ========== */
+      .game-over {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 200;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+      }
+
+      .game-over.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .game-over-emoji {
+        font-size: 80px;
+        margin-bottom: 20px;
+      }
+
+      .game-over-text {
+        font-size: 32px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 10px;
+      }
+
+      .game-over-reason {
+        font-size: 16px;
+        color: #b2bec3;
+        margin-bottom: 30px;
+      }
+
+      .btn-restart {
+        padding: 15px 40px;
+        font-size: 18px;
+        font-weight: 700;
+        background: linear-gradient(145deg, #00b894, #00cec9);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        transition: all 0.2s ease;
+      }
+
+      .btn-restart:hover {
+        transform: scale(1.05);
+      }
+
+      /* ========== АДАПТИВНОСТЬ ========== */
+      @media (max-width: 480px) {
+        .game-container {
+          border-radius: 0;
+          max-height: 100vh;
+        }
+
+        .character {
+          font-size: 48px;
+        }
+
+        .hedgehog {
+          bottom: 40%;
+        }
+
+        .cat {
+          left: 8%;
+          bottom: 38%;
+        }
+
+        .dog {
+          right: 15%;
+          bottom: 38%;
+        }
+
+        .aquarium {
+          width: 80px;
+          height: 60px;
+          right: 10px;
+        }
+
+        .fish {
+          font-size: 18px;
+        }
+
+        .btn {
+          padding: 10px 12px;
+        }
+
+        .btn-icon {
+          font-size: 24px;
+        }
+
+        .btn-label {
+          font-size: 10px;
+        }
+
+        .speech-bubble {
+          font-size: 14px;
+          padding: 8px 14px;
+          max-width: 160px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Игровой контейнер -->
+    <div class="game-container">
+      <!-- Комната -->
+      <div class="room">
+        <div class="floor"></div>
+
+        <!-- Аквариум с рыбками -->
+        <div class="aquarium">
+          <div class="fish">🐠</div>
+          <div class="fish">🐟</div>
+          <div class="fish">🐡</div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+        </div>
+
+        <!-- Персонажи -->
+        <div class="character cat" id="cat">🐱</div>
+        <div class="character hedgehog" id="hedgehog">🦔</div>
+        <div class="character dog" id="dog">🐶</div>
+
+        <!-- Речевые пузыри -->
+        <div class="speech-bubble" id="speech-bubble">Привет!</div>
+        <div class="speech-bubble cat-bubble" id="cat-bubble"></div>
+        <div class="speech-bubble dog-bubble" id="dog-bubble"></div>
+
+        <!-- Затемнение для сна -->
+        <div class="night-overlay" id="night-overlay"></div>
+      </div>
+
+      <!-- Панель статусов -->
+      <div class="status-panel">
+        <div class="title">🐾 Ёжик и Друзья</div>
+        <!-- Панель квестов -->
+        <div class="quest-panel" id="quest-panel">
+          <div class="quest-title">📜 Квест</div>
+          <div class="quest-text" id="quest-text">Загрузка...</div>
+          <div class="quest-progress">
+            <div class="quest-progress-bar" id="quest-progress-bar"></div>
+          </div>
+          <div class="quest-reward" id="quest-reward"></div>
+        </div>
+        <div class="stats">
+          <div class="stat-row">
+            <span class="stat-icon">🍗</span>
+            <div class="stat-bar-container">
+              <div
+                class="stat-bar hunger"
+                id="hunger-bar"
+                style="width: 100%"
+              ></div>
+            </div>
+            <span class="stat-value" id="hunger-value">100</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">⚡</span>
+            <div class="stat-bar-container">
+              <div
+                class="stat-bar energy"
+                id="energy-bar"
+                style="width: 100%"
+              ></div>
+            </div>
+            <span class="stat-value" id="energy-value">100</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">😄</span>
+            <div class="stat-bar-container">
+              <div
+                class="stat-bar mood"
+                id="mood-bar"
+                style="width: 100%"
+              ></div>
+            </div>
+            <span class="stat-value" id="mood-value">100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Панель управления -->
+      <div class="controls">
+        <button class="btn" id="btn-feed">
+          <span class="btn-icon">🍎</span>
+          <span class="btn-label">Покормить</span>
+        </button>
+        <button class="btn" id="btn-play">
+          <span class="btn-icon">🎾</span>
+          <span class="btn-label">Играть</span>
+        </button>
+        <button class="btn" id="btn-sleep">
+          <span class="btn-icon">💤</span>
+          <span class="btn-label">Спать</span>
+        </button>
+        <button class="btn" id="btn-talk">
+          <span class="btn-icon">🎤</span>
+          <span class="btn-label">Говорить</span>
+        </button>
+      </div>
+
+<!-- Экран Game Over -->
+        <div class="game-over" id="game-over">
+            <div class="game-over-emoji">😢</div>
+            <div class="game-over-text">Игра окончена!</div>
+            <div class="game-over-reason" id="game-over-reason">Твой ёжик проголодался...</div>
+            <button class="btn-restart" id="btn-restart">Играть снова</button>
+        </div>
+
+        <!-- Уведомление о награде -->
+        <div class="reward-notification" id="reward-notification">+50 🪙</div>
+    </div>
+        <button class="btn-restart" id="btn-restart">Играть снова</button>
+      </div>
+    </div>
+
+    <script>
+      /**
+       * Класс Game - управление состоянием игры, игровым циклом и событиями
+       */
+      class Game {
+        constructor() {
+          // Состояние игры
+          this.state = {
+            hunger: 100, // Сытость (0-100)
+            energy: 100, // Энергия (0-100)
+            mood: 100, // Настроение (0-100)
+            isSleeping: false, // Режим сна
+            isGameOver: false, // Игра окончена
+            lastUpdate: Date.now(), // Последнее обновление
+          };
+
+          // Настройки игры
+          this.config = {
+            decayRate: {
+              // Скорость уменьшения показателей (в секунду)
+              hunger: 0.8,
+              energy: 0.5,
+              mood: 0.6,
+            },
+            feedAmount: 25, // Сколько восстанавливает еда
+            playAmount: 30, // Сколько восстанавливает игра
+            sleepAmount: 40, // Сколько восстанавливает сон
+            sleepDuration: 5000, // Длительность сна (мс)
+          };
+
+          // Эмодзи персонажей для разных состояний
+          this.emojis = {
+            hedgehog: {
+              normal: "🦔",
+              happy: "😄",
+              eating: "😋",
+              sleeping: "😴",
+              sad: "😢",
+            },
+            cat: {
+              normal: "🐱",
+              happy: "😺",
+              sleeping: "😸",
+              angry: "😾",
+              bored: "🙀",
+            },
+            dog: {
+              normal: "🐶",
+              happy: "🐕",
+              sleeping: "🐕‍🦺",
+              excited: "🦮",
+            },
+          };
+
+          // Фразы для озвучки
+          this.phrases = [
+            "Привет, друг!",
+            "Как дела?",
+            "Я люблю яблочки!",
+            "Давай поиграем!",
+            "Спокойной ночи!",
+            "Я голодный!",
+            "Погладь меня!",
+            "Ура, ты дома!",
+          ];
+
+          // Ссылки на DOM-элементы
+          this.elements = {
+            hedgehog: document.getElementById("hedgehog"),
+            cat: document.getElementById("cat"),
+            dog: document.getElementById("dog"),
+            hungerBar: document.getElementById("hunger-bar"),
+            energyBar: document.getElementById("energy-bar"),
+            moodBar: document.getElementById("mood-bar"),
+            hungerValue: document.getElementById("hunger-value"),
+            energyValue: document.getElementById("energy-value"),
+            moodValue: document.getElementById("mood-value"),
+            speechBubble: document.getElementById("speech-bubble"),
+            catBubble: document.getElementById("cat-bubble"),
+            dogBubble: document.getElementById("dog-bubble"),
+            nightOverlay: document.getElementById("night-overlay"),
+            gameOver: document.getElementById("game-over"),
+            gameOverReason: document.getElementById("game-over-reason"),
+            btnFeed: document.getElementById("btn-feed"),
+            btnPlay: document.getElementById("btn-play"),
+            btnSleep: document.getElementById("btn-sleep"),
+            btnTalk: document.getElementById("btn-talk"),
+            btnRestart: document.getElementById("btn-restart"),
+            questPanel: document.getElementById("quest-panel"),
+            questText: document.getElementById("quest-text"),
+            questProgressBar: document.getElementById("quest-progress-bar"),
+            questReward: document.getElementById("quest-reward"),
+            rewardNotification: document.getElementById("reward-notification"),
+          };
+
+          // Система квестов
+          this.questSystem = {
+            currentQuest: null,
+            progress: 0,
+            coins: 0,
+            questTimer: null,
+          };
+
+          // Список доступных квестов
+          this.quests = [
+            {
+              id: "feed_5",
+              text: "Покормить ёжика 5 раз",
+              target: 5,
+              type: "feed",
+              reward: 30,
+              rewardText: "+30 🪙",
+            },
+            {
+              id: "play_5",
+              text: "Поиграть с ёжиком 5 раз",
+              target: 5,
+              type: "play",
+              reward: 30,
+              rewardText: "+30 🪙",
+            },
+            {
+              id: "talk_3",
+              text: "Поговорить с ёжиком 3 раза",
+              target: 3,
+              type: "talk",
+              reward: 25,
+              rewardText: "+25 🪙",
+            },
+            {
+              id: "sleep_2",
+              text: "Уложить ёжика спать 2 раза",
+              target: 2,
+              type: "sleep",
+              reward: 20,
+              rewardText: "+20 🪙",
+            },
+            {
+              id: "keep_alive_60",
+              text: "Продержаться 60 секунд",
+              target: 60,
+              type: "time",
+              reward: 50,
+              rewardText: "+50 🪙",
+            },
+            {
+              id: "full_hunger",
+              text: "Наполнить сытость до 100%",
+              target: 100,
+              type: "maxHunger",
+              reward: 15,
+              rewardText: "+15 🪙",
+            },
+            {
+              id: "full_energy",
+              text: "Наполнить энергию до 100%",
+              target: 100,
+              type: "maxEnergy",
+              reward: 15,
+              rewardText: "+15 🪙",
+            },
+            {
+              id: "full_mood",
+              text: "Поднять настроение до 100%",
+              target: 100,
+              type: "maxMood",
+              reward: 15,
+              rewardText: "+15 🪙",
+            },
+          ];
+
+          // Запуск системы квестов
+          this.startQuestSystem();
+
+          // Таймеры
+          this.sleepTimer = null;
+          this.gameLoopId = null;
+
+          // Привязка методов
+          this.update = this.update.bind(this);
+          this.feed = this.feed.bind(this);
+          this.play = this.play.bind(this);
+          this.sleep = this.sleep.bind(this);
+          this.talk = this.talk.bind(this);
+          this.gameOver = this.gameOver.bind(this);
+          this.restart = this.restart.bind(this);
+          this.updateUI = this.updateUI.bind(this);
+
+          // Инициализация
+          this.init();
+        }
+
+        /**
+         * Инициализация игры - установка обработчиков событий и запуск цикла
+         */
+        init() {
+          // Обработчики кнопок
+          this.elements.btnFeed.addEventListener("click", this.feed);
+          this.elements.btnPlay.addEventListener("click", this.play);
+          this.elements.btnSleep.addEventListener("click", this.sleep);
+          this.elements.btnTalk.addEventListener("click", this.talk);
+          this.elements.btnRestart.addEventListener("click", this.restart);
+
+          // Запуск игрового цикла с requestAnimationFrame
+          this.gameLoopId = requestAnimationFrame(this.update);
+
+          // Периодическое обновление состояния второстепенных персонажей
+          this.startCompanionBehavior();
+        }
+
+        /**
+         * Основной игровой цикл - обновление состояния
+         */
+        update() {
+          if (this.state.isGameOver) return;
+
+          const now = Date.now();
+          const deltaTime = (now - this.state.lastUpdate) / 1000; // в секундах
+          this.state.lastUpdate = now;
+
+          // Если не спим - уменьшаем показатели
+          if (!this.state.isSleeping) {
+            // Уменьшение сытости
+            this.state.hunger = Math.max(
+              0,
+              this.state.hunger - this.config.decayRate.hunger * deltaTime,
+            );
+
+            // Уменьшение энергии
+            this.state.energy = Math.max(
+              0,
+              this.state.energy - this.config.decayRate.energy * deltaTime,
+            );
+
+            // Уменьшение настроения
+            this.state.mood = Math.max(
+              0,
+              this.state.mood - this.config.decayRate.mood * deltaTime,
+            );
+          }
+
+          // Проверка на проигрыш
+          if (
+            this.state.hunger <= 0 ||
+            this.state.energy <= 0 ||
+            this.state.mood <= 0
+          ) {
+            this.gameOver();
+            return;
+          }
+
+          // Обновление UI
+          this.updateUI();
+
+          // Продолжаем цикл
+          this.gameLoopId = requestAnimationFrame(this.update);
+        }
+
+        /**
+         * Обновление интерфейса
+         */
+        updateUI() {
+          // Обновление полосок
+          this.elements.hungerBar.style.width = `${this.state.hunger}%`;
+          this.elements.energyBar.style.width = `${this.state.energy}%`;
+          this.elements.moodBar.style.width = `${this.state.mood}%`;
+
+          // Обновление текстовых значений
+          this.elements.hungerValue.textContent = Math.round(this.state.hunger);
+          this.elements.energyValue.textContent = Math.round(this.state.energy);
+          this.elements.moodValue.textContent = Math.round(this.state.mood);
+
+          // Обновление вида ёжика в зависимости от состояния
+          if (this.state.isSleeping) {
+            this.elements.hedgehog.textContent = this.emojis.hedgehog.sleeping;
+          } else if (this.state.mood < 30) {
+            this.elements.hedgehog.textContent = this.emojis.hedgehog.sad;
+          } else if (this.state.mood > 70) {
+            this.elements.hedgehog.textContent = this.emojis.hedgehog.happy;
+          } else {
+            this.elements.hedgehog.textContent = this.emojis.hedgehog.normal;
+          }
+        }
+
+        /**
+         * Покормить ёжика
+         */
+        feed() {
+          if (this.state.isGameOver || this.state.isSleeping) return;
+
+          // Восстановление сытости
+          this.state.hunger = Math.min(
+            100,
+            this.state.hunger + this.config.feedAmount,
+          );
+
+          // Анимация и визуальные эффекты
+          this.elements.hedgehog.textContent = this.emojis.hedgehog.eating;
+          this.showPopupEmoji(this.elements.hedgehog, "🍎");
+          this.animateBounce(this.elements.hedgehog);
+
+          // Животные реагируют
+          this.companionSpeak(0.7); // 70% шанс Yes
+
+          // Возврат к нормальному виду через 1 секунду
+          setTimeout(() => {
+            if (!this.state.isSleeping) {
+              this.updateUI();
+            }
+          }, 1000);
+        }
+
+        /**
+         * Играть с ёжиком
+         */
+        play() {
+          if (this.state.isGameOver || this.state.isSleeping) return;
+
+          // Восстановление настроения
+          this.state.mood = Math.min(
+            100,
+            this.state.mood + this.config.playAmount,
+          );
+
+          // Анимация всех персонажей
+          this.elements.hedgehog.textContent = this.emojis.hedgehog.happy;
+          this.elements.cat.textContent = this.emojis.cat.happy;
+          this.elements.dog.textContent = this.emojis.dog.excited;
+
+          this.showPopupEmoji(this.elements.hedgehog, "🎾");
+          this.animateBounce(this.elements.hedgehog);
+          this.animateBounce(this.elements.cat);
+          this.animateBounce(this.elements.dog);
+
+          // Животные радуются - говорят Yes
+          this.companionSpeak(0.9); // 90% шанс Yes
+
+          // Возврат к нормальному виду
+          setTimeout(() => {
+            if (!this.state.isSleeping) {
+              this.updateUI();
+            }
+          }, 1500);
+        }
+
+        /**
+         * Уложить ёжика спать
+         */
+        sleep() {
+          if (this.state.isGameOver || this.state.isSleeping) return;
+
+          this.state.isSleeping = true;
+
+          // Визуальные изменения
+          this.elements.hedgehog.textContent = this.emojis.hedgehog.sleeping;
+          this.elements.cat.textContent = this.emojis.cat.sleeping;
+          this.elements.dog.textContent = this.emojis.dog.sleeping;
+          this.elements.nightOverlay.classList.add("active");
+          this.elements.btnSleep.classList.add("sleeping");
+
+          // Животные тоже засыпают
+          this.companionSpeak(0.5); // 50/50
+
+          // Восстановление энергии во сне
+          const restoreEnergy = () => {
+            if (this.state.energy < 100 && this.state.isSleeping) {
+              this.state.energy = Math.min(100, this.state.energy + 0.5);
+              this.updateUI();
+            }
+          };
+
+          // Таймер восстановления энергии
+          this.sleepTimer = setInterval(restoreEnergy, 100);
+
+          // Пробуждение через указанное время
+          setTimeout(() => {
+            this.wakeUp();
+          }, this.config.sleepDuration);
+        }
+
+        /**
+         * Разбудить ёжика
+         */
+        wakeUp() {
+          if (this.sleepTimer) {
+            clearInterval(this.sleepTimer);
+            this.sleepTimer = null;
+          }
+
+          this.state.isSleeping = false;
+          this.state.energy = Math.min(
+            100,
+            this.state.energy + this.config.sleepAmount,
+          );
+
+          // Возврат визуального состояния
+          this.elements.nightOverlay.classList.remove("active");
+          this.elements.btnSleep.classList.remove("sleeping");
+          this.updateUI();
+
+          // Кратковременная радость
+          this.showPopupEmoji(this.elements.hedgehog, "🌟");
+        }
+
+        /**
+         * Ёжик говорит (озвучка или текст)
+         */
+        talk() {
+          if (this.state.isGameOver || this.state.isSleeping) return;
+
+          // Выбор случайной фразы
+          const phrase =
+            this.phrases[Math.floor(Math.random() * this.phrases.length)];
+
+          // Показ речевого пузыря
+          this.elements.speechBubble.textContent = phrase;
+          this.elements.speechBubble.classList.add("show");
+
+          // Попытка озвучить (если браузер поддерживает)
+          this.speak(phrase);
+
+          // Анимация
+          this.animateBounce(this.elements.hedgehog);
+
+          // Животные слушают
+          this.companionSpeak(0.6); // 60% шанс Yes
+
+          // Скрытие пузыря через 2 секунды
+          setTimeout(() => {
+            this.elements.speechBubble.classList.remove("show");
+          }, 2000);
+        }
+
+        /**
+         * Озвучка текста через SpeechSynthesis
+         */
+        speak(text) {
+          if ("speechSynthesis" in window) {
+            // Отменяем предыдущую речь
+            speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "ru-RU";
+            utterance.rate = 0.9;
+            utterance.pitch = 1.1;
+
+            speechSynthesis.speak(utterance);
+          }
+        }
+
+        /**
+         * Показать всплывающий эмодзи
+         */
+        showPopupEmoji(element, emoji) {
+          const popup = document.createElement("div");
+          popup.className = "popup-emoji";
+          popup.textContent = emoji;
+
+          // Позиционирование над элементом
+          const rect = element.getBoundingClientRect();
+          const containerRect = element.parentElement.getBoundingClientRect();
+
+          popup.style.left = `${rect.left - containerRect.left + rect.width / 2 - 20}px`;
+          popup.style.top = `${rect.top - containerRect.top - 20}px`;
+
+          element.parentElement.appendChild(popup);
+
+          // Удаление после анимации
+          setTimeout(() => popup.remove(), 1000);
+        }
+
+        /**
+         * Анимация прыжка
+         */
+        animateBounce(element) {
+          element.classList.add("bounce");
+          setTimeout(() => element.classList.remove("bounce"), 500);
+        }
+
+        /**
+         * Животные говорят Yes или No
+         */
+        companionSpeak(yesChance = 0.5) {
+          // Кот говорит Да или Нет
+          const catSaysYes = Math.random() < yesChance;
+          this.elements.catBubble.textContent = catSaysYes ? "Да!" : "Нет!";
+          this.elements.catBubble.classList.add("show");
+
+          // Собака говорит Да или Нет (с небольшой задержкой для разнообразия)
+          setTimeout(() => {
+            const dogSaysYes = Math.random() < yesChance;
+            this.elements.dogBubble.textContent = dogSaysYes ? "Да!" : "Нет!";
+            this.elements.dogBubble.classList.add("show");
+          }, 300);
+
+          // Скрыть пузыри через 1.5 секунды
+          setTimeout(() => {
+            this.elements.catBubble.classList.remove("show");
+            this.elements.dogBubble.classList.remove("show");
+          }, 1500);
+        }
+
+        /**
+         * Поведение второстепенных персонажей
+         */
+        startCompanionBehavior() {
+          setInterval(() => {
+            if (this.state.isGameOver || this.state.isSleeping) return;
+
+            // Случайное изменение состояния кота
+            const catMoods = ["normal", "bored", "angry", "happy"];
+            const randomCatMood =
+              catMoods[Math.floor(Math.random() * catMoods.length)];
+            this.elements.cat.textContent = this.emojis.cat[randomCatMood];
+
+            // Случайное изменение состояния собаки
+            const dogMoods = ["normal", "excited"];
+            const randomDogMood =
+              dogMoods[Math.floor(Math.random() * dogMoods.length)];
+            this.elements.dog.textContent = this.emojis.dog[randomDogMood];
+          }, 5000); // Каждые 5 секунд
+        }
+
+        /**
+         * Game Over - конец игры
+         */
+        gameOver() {
+          this.state.isGameOver = true;
+
+          // Определение причины
+          let reason = "";
+          if (this.state.hunger <= 0) {
+            reason = "Твой ёжик проголодался...";
+          } else if (this.state.energy <= 0) {
+            reason = "Твой ёжик уснул от усталости...";
+          } else if (this.state.mood <= 0) {
+            reason = "Твой ёжик загрустил...";
+          }
+
+          this.elements.gameOverReason.textContent = reason;
+          this.elements.gameOver.classList.add("show");
+
+          // Остановка цикла
+          if (this.gameLoopId) {
+            cancelAnimationFrame(this.gameLoopId);
+          }
+        }
+
+        /**
+         * Перезапуск игры
+         */
+        restart() {
+          // Сброс состояния
+          this.state = {
+            hunger: 100,
+            energy: 100,
+            mood: 100,
+            isSleeping: false,
+            isGameOver: false,
+            lastUpdate: Date.now(),
+          };
+
+          // Сброс UI
+          this.elements.gameOver.classList.remove("show");
+          this.elements.nightOverlay.classList.remove("active");
+          this.elements.btnSleep.classList.remove("sleeping");
+          this.elements.speechBubble.classList.remove("show");
+          this.elements.catBubble.classList.remove("show");
+          this.elements.dogBubble.classList.remove("show");
+
+          // Остановка таймера сна если активен
+          if (this.sleepTimer) {
+            clearInterval(this.sleepTimer);
+            this.sleepTimer = null;
+          }
+
+          // Перезапуск
+          this.updateUI();
+          this.gameLoopId = requestAnimationFrame(this.update);
+        }
+      }
+
+      // Запуск игры при загрузке страницы
+      window.addEventListener("DOMContentLoaded", () => {
+        new Game();
+      });
+    </script>
+  </body>
+</html>
