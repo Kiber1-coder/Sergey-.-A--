@@ -331,6 +331,20 @@
         background: linear-gradient(135deg, #00b894, #00cec9) !important;
       }
 
+      .coins-display {
+        text-align: center;
+        padding: 8px;
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: white;
+        font-size: 14px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+      }
+
+      .coins-display strong {
+        font-size: 18px;
+      }
+
       /* Уведомление о награде */
       .reward-notification {
         position: fixed;
@@ -355,6 +369,841 @@
       .reward-notification.show {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      /* ========== МАГАЗИН СКИНОВ ========== */
+      .btn-shop {
+        position: relative;
+      }
+
+      .coin-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #f39c12;
+        color: white;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-weight: 700;
+      }
+
+      .shop-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 500;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .shop-overlay.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .shop-panel {
+        background: linear-gradient(135deg, #2d3436, #636e72);
+        width: 95%;
+        max-width: 500px;
+        max-height: 85vh;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        overflow-y: auto;
+      }
+
+      .shop-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .shop-header h2 {
+        font-size: 20px;
+        margin: 0;
+      }
+
+      .shop-close {
+        background: #e74c3c;
+        border: none;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        font-size: 16px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .shop-close:hover {
+        transform: scale(1.1);
+      }
+
+      .shop-coins {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #f39c12;
+      }
+
+      .shop-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .shop-tab {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .shop-tab.active {
+        background: linear-gradient(135deg, #00b894, #00cec9);
+      }
+
+      .shop-tab:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .shop-items {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+
+      .shop-items::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .shop-items::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+
+      .shop-items::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+      }
+
+      /* ========== МИНИ-ИГРЫ ========== */
+      .minigame-overlay, .gameplay-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 600;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .minigame-overlay.show, .gameplay-overlay.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .minigame-panel, .gameplay-panel {
+        background: linear-gradient(135deg, #2d3436, #636e72);
+        width: 90%;
+        max-width: 450px;
+        max-height: 80vh;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        overflow-y: auto;
+      }
+
+      .minigame-header, .gameplay-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .minigame-header h2, .gameplay-header h2 {
+        font-size: 22px;
+        margin: 0;
+      }
+
+      .minigame-close, .gameplay-close {
+        background: #e74c3c;
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .minigame-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .minigame-item {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .minigame-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.02);
+      }
+
+      .minigame-icon {
+        font-size: 40px;
+      }
+
+      .minigame-name {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .minigame-desc {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      .minigame-reward {
+        font-size: 14px;
+        font-weight: 700;
+        color: #f39c12;
+        margin-left: auto;
+      }
+
+      .gameplay-content {
+        min-height: 200px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 80px;
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+      }
+
+      .gameplay-score, .gameplay-timer {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .gameplay-start {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #00b894, #00cec9);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .gameplay-start:hover {
+        transform: scale(1.02);
+      }
+
+      /* Сетка для игры память */
+      .memory-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .memory-card {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .memory-card:hover {
+        transform: scale(1.1);
+      }
+
+      .memory-card.flipped, .memory-card.matched {
+        background: linear-gradient(135deg, #00b894, #00cec9);
+      }
+
+      .memory-card.matched {
+        opacity: 0.5;
+      }
+
+      /* Кликеру */
+      .clicker-target {
+        font-size: 100px;
+        animation: pulse 0.5s ease-in-out infinite;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+
+      .catch-target {
+        position: absolute;
+        font-size: 50px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.1s ease;
+      }
+
+      /* ========== РЕЖИМ ВЫЖИВАНИЯ ========== */
+      .survival-select-overlay, .survival-game-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 700;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .survival-select-overlay.show, .survival-game-overlay.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .survival-select-panel {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        width: 90%;
+        max-width: 500px;
+        border-radius: 20px;
+        padding: 25px;
+        color: white;
+        text-align: center;
+      }
+
+      .survival-select-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .survival-select-header h2 {
+        font-size: 24px;
+        margin: 0;
+        color: #e74c3c;
+      }
+
+      .survival-select-close {
+        background: #e74c3c;
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .survival-select-desc {
+        color: #aaa;
+        margin-bottom: 20px;
+      }
+
+      .survival-characters {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+      }
+
+      .survival-char {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 3px solid transparent;
+      }
+
+      .survival-char:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+
+      .survival-char.selected {
+        border-color: #e74c3c;
+        background: rgba(231, 76, 60, 0.3);
+      }
+
+      .survival-char-emoji {
+        font-size: 50px;
+      }
+
+      .survival-char-name {
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 5px;
+      }
+
+      .survival-game-container {
+        width: 100%;
+        height: 100%;
+        max-width: 600px;
+        background: linear-gradient(180deg, #87CEEB 0%, #228B22 50%, #1a5c1a 100%);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .survival-game-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      .survival-stats {
+        display: flex;
+        gap: 20px;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .survival-stats span:first-child {
+        color: #e74c3c;
+      }
+
+      .survival-stats span:nth-child(2) {
+        color: #f1c40f;
+      }
+
+      .survival-game-close {
+        background: #e74c3c;
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .survival-game-area {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .survival-player {
+        position: absolute;
+        font-size: 40px;
+        transition: left 0.1s ease, bottom 0.1s ease;
+        z-index: 10;
+      }
+
+      .survival-enemy {
+        position: absolute;
+        font-size: 35px;
+        z-index: 5;
+      }
+
+      .survival-food {
+        position: absolute;
+        font-size: 25px;
+        z-index: 5;
+        animation: float 1s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+
+      .survival-game-controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.7);
+      }
+
+      .survival-btn {
+        padding: 15px 25px;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .survival-btn:active {
+        transform: scale(0.95);
+      }
+
+      .survival-ground {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(180deg, #228B22, #1a5c1a);
+      }
+
+      .survival-game-over {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+      }
+
+      .survival-game-over h2 {
+        font-size: 40px;
+        color: #e74c3c;
+        margin-bottom: 20px;
+      }
+
+      .survival-game-over p {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .survival-game-over .score-final {
+        font-size: 30px;
+        color: #f1c40f;
+        margin-bottom: 20px;
+      }
+
+      /* ========== РЕЖИМ ЗООПАРК ========== */
+      .zoo-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 800;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .zoo-overlay.show {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .zoo-panel {
+        background: linear-gradient(135deg, #1e3c2f, #2d5a45);
+        width: 95%;
+        max-width: 600px;
+        max-height: 90vh;
+        border-radius: 20px;
+        padding: 20px;
+        color: white;
+        overflow-y: auto;
+      }
+
+      .zoo-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .zoo-header h2 {
+        font-size: 24px;
+        margin: 0;
+      }
+
+      .zoo-coins {
+        font-size: 20px;
+        font-weight: 700;
+        color: #f1c40f;
+      }
+
+      .zoo-close {
+        background: #e74c3c;
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .zoo-stats {
+        display: flex;
+        justify-content: space-around;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+      }
+
+      .zoo-stat {
+        font-size: 14px;
+        text-align: center;
+      }
+
+      .zoo-actions {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .zoo-btn {
+        flex: 1;
+        padding: 12px;
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .zoo-btn:hover {
+        transform: scale(1.02);
+      }
+
+      .zoo-btn:disabled {
+        background: #7f8c8d;
+        cursor: not-allowed;
+      }
+
+      .zoo-area {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        min-height: 200px;
+        background: linear-gradient(180deg, #87CEEB 0%, #90EE90 50%, #228B22 100%);
+        border-radius: 15px;
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+
+      .zoo-pen {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .zoo-pen.empty {
+        border: 2px dashed rgba(255, 255, 255, 0.3);
+      }
+
+      .zoo-pen-animal {
+        font-size: 40px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .zoo-pen-animal:hover {
+        transform: scale(1.1);
+      }
+
+      .zoo-pen-name {
+        font-size: 11px;
+        margin-top: 5px;
+        text-align: center;
+      }
+
+      .zoo-pen-hunger {
+        width: 100%;
+        height: 6px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .zoo-pen-hunger-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
+        transition: width 0.3s ease;
+      }
+
+      .zoo-pen-btn {
+        position: absolute;
+        bottom: 5px;
+        background: #e67e22;
+        border: none;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-size: 10px;
+        cursor: pointer;
+      }
+
+      .zoo-shop {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        padding: 15px;
+      }
+
+      .zoo-shop h3 {
+        margin: 0 0 15px 0;
+        font-size: 18px;
+      }
+
+      .zoo-shop-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .zoo-shop-item {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .zoo-shop-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .zoo-shop-item.owned {
+        border: 2px solid #27ae60;
+      }
+
+      .zoo-shop-emoji {
+        font-size: 35px;
+      }
+
+      .zoo-shop-name {
+        font-size: 12px;
+        margin: 5px 0;
+      }
+
+      .zoo-shop-price {
+        font-size: 14px;
+        font-weight: 700;
+        color: #f1c40f;
+      }
+
+      .zoo-shop-income {
+        font-size: 10px;
+        color: #2ecc71;
+      }
+
+      .shop-item {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        padding: 6px 3px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+      }
+
+      .shop-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .shop-item.selected {
+        border-color: #00b894;
+        background: rgba(0, 184, 148, 0.2);
+      }
+
+      .shop-item.owned {
+        border-color: #f39c12;
+      }
+
+      .shop-item-emoji {
+        font-size: 22px;
+        margin-bottom: 2px;
+      }
+
+      .shop-item-name {
+        font-size: 8px;
+        margin-bottom: 2px;
+        font-weight: 600;
+      }
+
+      .shop-item-price {
+        font-size: 8px;
+        font-weight: 700;
+        color: #f39c12;
+      }
+
+      .shop-item-price.free {
+        color: #00b894;
+      }
+
+      .shop-item.owned .shop-item-price {
+        color: #00b894;
       }
 
       .stat-icon {
@@ -673,9 +1522,9 @@
 
         <!-- Аквариум с рыбками -->
         <div class="aquarium">
-          <div class="fish">🐠</div>
-          <div class="fish">🐟</div>
-          <div class="fish">🐡</div>
+          <div class="fish" id="fish1">🐠</div>
+          <div class="fish" id="fish2">🐟</div>
+          <div class="fish" id="fish3">🐡</div>
           <div class="bubble"></div>
           <div class="bubble"></div>
           <div class="bubble"></div>
@@ -705,9 +1554,12 @@
           <div class="quest-progress">
             <div class="quest-progress-bar" id="quest-progress-bar"></div>
           </div>
-          <div class="quest-reward" id="quest-reward"></div>
-        </div>
-        <div class="stats">
+<div class="quest-reward" id="quest-reward"></div>
+            </div>
+            <div class="coins-display" id="coins-display">
+                <span>🪙 Монетки: <strong id="total-coins">0</strong></span>
+            </div>
+            <div class="stats">
           <div class="stat-row">
             <span class="stat-icon">🍗</span>
             <div class="stat-bar-container">
@@ -758,11 +1610,48 @@
           <span class="btn-icon">💤</span>
           <span class="btn-label">Спать</span>
         </button>
-        <button class="btn" id="btn-talk">
-          <span class="btn-icon">🎤</span>
-          <span class="btn-label">Говорить</span>
-        </button>
-      </div>
+<button class="btn" id="btn-talk">
+                <span class="btn-icon">🎤</span>
+                <span class="btn-label">Говорить</span>
+            </button>
+            <button class="btn btn-shop" id="btn-shop">
+                <span class="btn-icon">🛒</span>
+                <span class="btn-label">Магазин</span>
+                <span class="coin-count" id="coin-count">🪙 0</span>
+            </button>
+            <button class="btn btn-minigames" id="btn-minigames">
+                <span class="btn-icon">🎮</span>
+                <span class="btn-label">Игры</span>
+            </button>
+            <button class="btn btn-survival" id="btn-survival">
+                <span class="btn-icon">⚔️</span>
+                <span class="btn-label">Выживание</span>
+            </button>
+            <button class="btn btn-zoo" id="btn-zoo">
+                <span class="btn-icon">🏰</span>
+                <span class="btn-label">Зоопарк</span>
+            </button>
+        </div>
+
+        <!-- Магазин скинов -->
+        <div class="shop-overlay" id="shop-overlay">
+            <div class="shop-panel">
+                <div class="shop-header">
+                    <h2>🛒 Магазин Скинов</h2>
+                    <button class="shop-close" id="shop-close">✕</button>
+                </div>
+                <div class="shop-coins">
+                    <span id="shop-coins">🪙 0</span>
+                </div>
+                <div class="shop-tabs">
+                    <button class="shop-tab active" data-character="hedgehog">🦔 Ёжик</button>
+                    <button class="shop-tab" data-character="cat">🐱 Кот</button>
+                    <button class="shop-tab" data-character="dog">🐶 Собака</button>
+                    <button class="shop-tab" data-character="fish">🐠 Рыбка</button>
+                </div>
+                <div class="shop-items" id="shop-items"></div>
+            </div>
+        </div>
 
 <!-- Экран Game Over -->
         <div class="game-over" id="game-over">
@@ -774,6 +1663,86 @@
 
         <!-- Уведомление о награде -->
         <div class="reward-notification" id="reward-notification">+50 🪙</div>
+
+        <!-- Мини-игры -->
+        <div class="minigame-overlay" id="minigame-overlay">
+            <div class="minigame-panel">
+                <div class="minigame-header">
+                    <h2>🎮 Мини-игры</h2>
+                    <button class="minigame-close" id="minigame-close">✕</button>
+                </div>
+                <div class="minigame-list">
+                    <div class="minigame-item" data-game="clicker">
+                        <div class="minigame-icon">👆</div>
+                        <div class="minigame-name">Кликер</div>
+                        <div class="minigame-desc">Нажимай быстро!</div>
+                        <div class="minigame-reward">+5-20 🪙</div>
+                    </div>
+                    <div class="minigame-item" data-game="memory">
+                        <div class="minigame-icon">🧠</div>
+                        <div class="minigame-name">Память</div>
+                        <div class="minigame-desc">Найди пару</div>
+                        <div class="minigame-reward">+10-30 🪙</div>
+                    </div>
+                    <div class="minigame-item" data-game="catch">
+                        <div class="minigame-icon">🦋</div>
+                        <div class="minigame-name">Поймай</div>
+                        <div class="minigame-desc">Лови эмодзи!</div>
+                        <div class="minigame-reward">+15-40 🪙</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Игровой区域 кликера -->
+        <div class="gameplay-overlay" id="gameplay-overlay">
+            <div class="gameplay-panel" id="gameplay-panel">
+                <div class="gameplay-header">
+                    <h2 id="gameplay-title">Кликер</h2>
+                    <button class="gameplay-close" id="gameplay-close">✕</button>
+                </div>
+                <div class="gameplay-content" id="gameplay-content"></div>
+                <div class="gameplay-score">
+                    Счёт: <span id="gameplay-score">0</span>
+                </div>
+                <div class="gameplay-timer">
+                    Осталось: <span id="gameplay-timer">10</span>с
+                </div>
+                <button class="gameplay-start" id="gameplay-start">Начать игру</button>
+            </div>
+        </div>
+
+        <!-- Режим выживания - выбор персонажа -->
+        <div class="survival-select-overlay" id="survival-select-overlay">
+            <div class="survival-select-panel">
+                <div class="survival-select-header">
+                    <h2>⚔️ Режим Выживания</h2>
+                    <button class="survival-select-close" id="survival-select-close">✕</button>
+                </div>
+                <p class="survival-select-desc">Выбери персонажа и выживай в диком мире!</p>
+                <div class="survival-characters" id="survival-characters"></div>
+            </div>
+        </div>
+
+        <!-- Режим выживания - игра -->
+        <div class="survival-game-overlay" id="survival-game-overlay">
+            <div class="survival-game-container">
+                <div class="survival-game-header">
+                    <div class="survival-stats">
+                        <span>❤️ <span id="survival-health">100</span></span>
+                        <span>⭐ <span id="survival-score">0</span></span>
+                        <span>⏱️ <span id="survival-time">0:00</span></span>
+                    </div>
+                    <button class="survival-game-close" id="survival-game-close">✕</button>
+                </div>
+                <div class="survival-game-area" id="survival-game-area"></div>
+                <div class="survival-game-controls">
+                    <button class="survival-btn" id="survival-left">⬅️</button>
+                    <button class="survival-btn" id="survival-up">⬆️ Прыжок</button>
+                    <button class="survival-btn" id="survival-right">➡️</button>
+                </div>
+            </div>
+        </div>
     </div>
         <button class="btn-restart" id="btn-restart">Играть снова</button>
       </div>
@@ -872,6 +1841,42 @@
             questProgressBar: document.getElementById("quest-progress-bar"),
             questReward: document.getElementById("quest-reward"),
             rewardNotification: document.getElementById("reward-notification"),
+            shopOverlay: document.getElementById("shop-overlay"),
+            shopCoins: document.getElementById("shop-coins"),
+            shopItems: document.getElementById("shop-items"),
+            coinCount: document.getElementById("coin-count"),
+            btnShop: document.getElementById("btn-shop"),
+            totalCoins: document.getElementById("total-coins"),
+            fish1: document.getElementById("fish1"),
+            fish2: document.getElementById("fish2"),
+            fish3: document.getElementById("fish3"),
+            minigameOverlay: document.getElementById("minigame-overlay"),
+            gameplayOverlay: document.getElementById("gameplay-overlay"),
+            gameplayTitle: document.getElementById("gameplay-title"),
+            gameplayContent: document.getElementById("gameplay-content"),
+            gameplayScore: document.getElementById("gameplay-score"),
+            gameplayTimer: document.getElementById("gameplay-timer"),
+            gameplayStart: document.getElementById("gameplay-start"),
+            btnMinigames: document.getElementById("btn-minigames"),
+            btnSurvival: document.getElementById("btn-survival"),
+            survivalSelectOverlay: document.getElementById("survival-select-overlay"),
+            survivalCharacters: document.getElementById("survival-characters"),
+            survivalGameOverlay: document.getElementById("survival-game-overlay"),
+            survivalGameArea: document.getElementById("survival-game-area"),
+            survivalHealth: document.getElementById("survival-health"),
+            survivalScore: document.getElementById("survival-score"),
+            survivalTime: document.getElementById("survival-time"),
+            btnZoo: document.getElementById("btn-zoo"),
+            zooOverlay: document.getElementById("zoo-overlay"),
+            zooCoins: document.getElementById("zoo-coins"),
+            zooLevel: document.getElementById("zoo-level"),
+            zooAnimalsCount: document.getElementById("zoo-animals-count"),
+            zooMaxAnimals: document.getElementById("zoo-max-animals"),
+            zooIncome: document.getElementById("zoo-income"),
+            zooExpandCost: document.getElementById("zoo-expand-cost"),
+            zooArea: document.getElementById("zoo-area"),
+            zooShop: document.getElementById("zoo-shop"),
+            zooShopList: document.getElementById("zoo-shop-list"),
           };
 
           // Система квестов
@@ -881,6 +1886,132 @@
             coins: 0,
             questTimer: null,
           };
+
+          // Система скинов
+          this.skins = {
+            hedgehog: [
+              { id: "h1", emoji: "🦔", name: "Ёжик", price: 0, owned: true },
+              { id: "h2", emoji: "🐹", name: "Хомячок", price: 30, owned: false },
+              { id: "h3", emoji: "🐰", name: "Кролик", price: 40, owned: false },
+              { id: "h4", emoji: "🐼", name: "Панда", price: 50, owned: false },
+              { id: "h5", emoji: "🦊", name: "Лиса", price: 60, owned: false },
+              { id: "h6", emoji: "🐻", name: "Мишка", price: 70, owned: false },
+              { id: "h7", emoji: "🐨", name: "Коала", price: 80, owned: false },
+              { id: "h8", emoji: "🦁", name: "Львенок", price: 90, owned: false },
+              { id: "h9", emoji: "🐯", name: "Тигренок", price: 100, owned: false },
+              { id: "h10", emoji: "🐸", name: "Лягушка", price: 40, owned: false },
+              { id: "h11", emoji: "🐢", name: "Черепашка", price: 50, owned: false },
+              { id: "h12", emoji: "🦎", name: "Ящерица", price: 60, owned: false },
+              { id: "h13", emoji: "🐍", name: "Змея", price: 70, owned: false },
+              { id: "h14", emoji: "🦋", name: "Бабочка", price: 35, owned: false },
+              { id: "h15", emoji: "🐝", name: "Пчела", price: 40, owned: false },
+              { id: "h16", emoji: "🦀", name: "Краб", price: 55, owned: false },
+              { id: "h17", emoji: "🐌", name: "Улитка", price: 25, owned: false },
+              { id: "h18", emoji: "🦂", name: "Скорпион", price: 65, owned: false },
+              { id: "h19", emoji: "🐞", name: "Божья коровка", price: 30, owned: false },
+              { id: "h20", emoji: "🦗", name: "Кузнечик", price: 35, owned: false },
+              { id: "h21", emoji: "🐜", name: "Муравей", price: 20, owned: false },
+              { id: "h22", emoji: "🕷️", name: "Паук", price: 45, owned: false },
+              { id: "h23", emoji: "🦟", name: "Комар", price: 15, owned: false },
+              { id: "h24", emoji: "🦕", name: "Динозавр", price: 150, owned: false },
+            ],
+            cat: [
+              { id: "c1", emoji: "🐱", name: "Кошка", price: 0, owned: true },
+              { id: "c2", emoji: "🐈", name: "Рыжий", price: 30, owned: false },
+              { id: "c3", emoji: "🐈‍⬛", name: "Черный", price: 30, owned: false },
+              { id: "c4", emoji: "😺", name: "Весёлый", price: 40, owned: false },
+              { id: "c5", emoji: "😸", name: "Царский", price: 50, owned: false },
+              { id: "c6", emoji: "😻", name: "Влюблённый", price: 50, owned: false },
+              { id: "c7", emoji: "😼", name: "Хитрюга", price: 60, owned: false },
+              { id: "c8", emoji: "😽", name: "Целующий", price: 60, owned: false },
+              { id: "c9", emoji: "🙀", name: "Удивленный", price: 70, owned: false },
+              { id: "c10", emoji: "😿", name: "Грустный", price: 40, owned: false },
+              { id: "c11", emoji: "😾", name: "Злой", price: 80, owned: false },
+              { id: "c12", emoji: "🦁", name: "Лев", price: 150, owned: false },
+              { id: "c13", emoji: "🐆", name: "Леопард", price: 120, owned: false },
+              { id: "c14", emoji: "🐅", name: "Тигр", price: 130, owned: false },
+              { id: "c15", emoji: "🐯", name: "Тигренок", price: 80, owned: false },
+              { id: "c16", emoji: "🐆", name: "Гепард", price: 140, owned: false },
+              { id: "c17", emoji: "🐈", name: "Белый", price: 35, owned: false },
+              { id: "c18", emoji: "😼", name: "Хитрюга", price: 45, owned: false },
+              { id: "c19", emoji: "😽", name: "Целующий", price: 50, owned: false },
+              { id: "c20", emoji: "😿", name: "Грустный", price: 40, owned: false },
+              { id: "c21", emoji: "😾", name: "Злой", price: 55, owned: false },
+              { id: "c22", emoji: "🙀", name: "Удивленный", price: 45, owned: false },
+              { id: "c23", emoji: "😹", name: "Смеющийся", price: 60, owned: false },
+              { id: "c24", emoji: "😻", name: "Влюблённый", price: 65, owned: false },
+              { id: "c25", emoji: "🐆", name: "Снежный барс", price: 180, owned: false },
+              { id: "c26", emoji: "🦁", name: "Львица", price: 160, owned: false },
+            ],
+            dog: [
+              { id: "d1", emoji: "🐶", name: "Собака", price: 0, owned: true },
+              { id: "d2", emoji: "🐕", name: "Пес", price: 30, owned: false },
+              { id: "d3", emoji: "🐕‍🦺", name: "Проводник", price: 40, owned: false },
+              { id: "d4", emoji: "🦮", name: "Поводырь", price: 40, owned: false },
+              { id: "d5", emoji: "🐺", name: "Волк", price: 50, owned: false },
+              { id: "d6", emoji: "🐩", name: "Пудель", price: 60, owned: false },
+              { id: "d7", emoji: "🦃", name: "Индюк", price: 30, owned: false },
+              { id: "d8", emoji: "🦤", name: "Страус", price: 40, owned: false },
+              { id: "d9", emoji: "🦌", name: "Олень", price: 70, owned: false },
+              { id: "d10", emoji: "🦄", name: "Единорог", price: 200, owned: false },
+              { id: "d11", emoji: "🐐", name: "Козел", price: 50, owned: false },
+              { id: "d12", emoji: "🐏", name: "Баран", price: 40, owned: false },
+              { id: "d13", emoji: "🦙", name: "Лама", price: 80, owned: false },
+              { id: "d14", emoji: "🦘", name: "Кенгуру", price: 100, owned: false },
+              { id: "d15", emoji: "🦌", name: "Олень", price: 90, owned: false },
+              { id: "d16", emoji: "🦬", name: "Бизон", price: 110, owned: false },
+              { id: "d17", emoji: "🦣", name: "Мамонт", price: 200, owned: false },
+              { id: "d18", emoji: "🦫", name: "Бобёр", price: 70, owned: false },
+              { id: "d19", emoji: "🦦", name: "Выдра", price: 75, owned: false },
+              { id: "d20", emoji: "🦨", name: "Скунс", price: 50, owned: false },
+              { id: "d21", emoji: "🐿️", name: "Белка", price: 45, owned: false },
+              { id: "d22", emoji: "🐻", name: "Медведь", price: 130, owned: false },
+              { id: "d23", emoji: "🐼", name: "Панда", price: 140, owned: false },
+              { id: "d24", emoji: "🐨", name: "Коала", price: 150, owned: false },
+              { id: "d25", emoji: "🦥", name: "Ленивец", price: 85, owned: false },
+              { id: "d26", emoji: "🦦", name: "Енот", price: 65, owned: false },
+            ],
+            fish: [
+              { id: "f1", emoji: "🐠", name: "Рыбка", price: 0, owned: true },
+              { id: "f2", emoji: "🐟", name: "Синяя", price: 20, owned: false },
+              { id: "f3", emoji: "🐡", name: "Фугу", price: 30, owned: false },
+              { id: "f4", emoji: "🦈", name: "Акула", price: 80, owned: false },
+              { id: "f5", emoji: "🐳", name: "Кит", price: 100, owned: false },
+              { id: "f6", emoji: "🐋", name: "Дельфин", price: 90, owned: false },
+              { id: "f7", emoji: "🦑", name: "Кальмар", price: 50, owned: false },
+              { id: "f8", emoji: "🦐", name: "Креветка", price: 40, owned: false },
+              { id: "f9", emoji: "🦀", name: "Краб", price: 60, owned: false },
+              { id: "f10", emoji: "🐌", name: "Улитка", price: 30, owned: false },
+              { id: "f11", emoji: "🐚", name: "Раковина", price: 25, owned: false },
+              { id: "f12", emoji: "🦢", name: "Лебедь", price: 70, owned: false },
+              { id: "f13", emoji: "🦩", name: "Фламинго", price: 85, owned: false },
+              { id: "f14", emoji: "🐊", name: "Крокодил", price: 120, owned: false },
+              { id: "f15", emoji: "🐢", name: "Черепаха", price: 60, owned: false },
+              { id: "f16", emoji: "🦎", name: "Ящерица", price: 45, owned: false },
+              { id: "f17", emoji: "🐡", name: "Рыба-еж", price: 55, owned: false },
+              { id: "f18", emoji: "🦈", name: "Акула", price: 100, owned: false },
+              { id: "f19", emoji: "🐳", name: "Синий кит", price: 130, owned: false },
+              { id: "f20", emoji: "🐋", name: "Дельфин", price: 110, owned: false },
+              { id: "f21", emoji: "🦑", name: "Кальмар", price: 65, owned: false },
+              { id: "f22", emoji: "🦐", name: "Креветка", price: 40, owned: false },
+              { id: "f23", emoji: "🦀", name: "Краб", price: 50, owned: false },
+              { id: "f24", emoji: "🐚", name: "Раковина", price: 30, owned: false },
+              { id: "f25", emoji: "🐙", name: "Осьминог", price: 80, owned: false },
+              { id: "f26", emoji: "🦞", name: "Омар", price: 90, owned: false },
+              { id: "f27", emoji: "🦑", name: "Каракатица", price: 75, owned: false },
+              { id: "f28", emoji: "🐠", name: "Тропическая", price: 35, owned: false },
+            ],
+          };
+
+          // Текущие выбранные скины
+          this.currentSkins = {
+            hedgehog: "h1",
+            cat: "c1",
+            dog: "d1",
+            fish: "f1",
+          };
+
+          this.currentShopTab = "hedgehog";
 
           // Список доступных квестов
           this.quests = [
@@ -952,6 +2083,8 @@
 
           // Запуск системы квестов
           this.startQuestSystem();
+          this.updateShopCoins();
+          this.applySkins();
 
           // Таймеры
           this.sleepTimer = null;
@@ -982,11 +2115,82 @@
           this.elements.btnTalk.addEventListener("click", this.talk);
           this.elements.btnRestart.addEventListener("click", this.restart);
 
+          // Обработчики магазина
+          this.elements.btnShop.addEventListener("click", () => this.openShop());
+          document.getElementById("shop-close").addEventListener("click", () => this.closeShop());
+          this.elements.shopOverlay.addEventListener("click", (e) => {
+            if (e.target === this.elements.shopOverlay) this.closeShop();
+          });
+
+          // Обработчики табов магазина
+          document.querySelectorAll(".shop-tab").forEach((tab) => {
+            tab.addEventListener("click", (e) => {
+              this.currentShopTab = e.target.dataset.character;
+              this.updateShopTabs();
+              this.renderShopItems();
+            });
+          });
+
           // Запуск игрового цикла с requestAnimationFrame
           this.gameLoopId = requestAnimationFrame(this.update);
 
           // Периодическое обновление состояния второстепенных персонажей
           this.startCompanionBehavior();
+
+          // Обработчики мини-игр
+          this.elements.btnMinigames.addEventListener("click", () => this.openMinigames());
+          document.getElementById("minigame-close").addEventListener("click", () => this.closeMinigames());
+          document.getElementById("gameplay-close").addEventListener("click", () => this.closeGameplay());
+          this.elements.minigameOverlay.addEventListener("click", (e) => {
+            if (e.target === this.elements.minigameOverlay) this.closeMinigames();
+          });
+          this.elements.gameplayOverlay.addEventListener("click", (e) => {
+            if (e.target === this.elements.gameplayOverlay) this.closeGameplay();
+          });
+
+          // Выбор мини-игры
+          document.querySelectorAll(".minigame-item").forEach((item) => {
+            item.addEventListener("click", () => {
+              const game = item.dataset.game;
+              this.startMinigame(game);
+            });
+          });
+
+          this.elements.gameplayStart.addEventListener("click", () => this.runMinigame());
+
+          // Обработчики режима выживания
+          this.elements.btnSurvival.addEventListener("click", () => this.openSurvivalSelect());
+          document.getElementById("survival-select-close").addEventListener("click", () => this.closeSurvivalSelect());
+          document.getElementById("survival-game-close").addEventListener("click", () => this.closeSurvivalGame());
+          this.elements.survivalSelectOverlay.addEventListener("click", (e) => {
+            if (e.target === this.elements.survivalSelectOverlay) this.closeSurvivalSelect();
+          });
+
+          // Кнопки управления
+          document.getElementById("survival-left").addEventListener("mousedown", () => this.survivalMoveLeft = true);
+          document.getElementById("survival-left").addEventListener("mouseup", () => this.survivalMoveLeft = false);
+          document.getElementById("survival-left").addEventListener("touchstart", () => this.survivalMoveLeft = true);
+          document.getElementById("survival-left").addEventListener("touchend", () => this.survivalMoveLeft = false);
+          document.getElementById("survival-right").addEventListener("mousedown", () => this.survivalMoveRight = true);
+          document.getElementById("survival-right").addEventListener("mouseup", () => this.survivalMoveRight = false);
+          document.getElementById("survival-right").addEventListener("touchstart", () => this.survivalMoveRight = true);
+          document.getElementById("survival-right").addEventListener("touchend", () => this.survivalMoveRight = false);
+          document.getElementById("survival-up").addEventListener("click", () => this.survivalJump());
+
+          // Рендер персонажей для выбора
+          this.renderSurvivalCharacters();
+
+          // Обработчики зоопарка
+          this.elements.btnZoo.addEventListener("click", () => this.openZoo());
+          document.getElementById("zoo-close").addEventListener("click", () => this.closeZoo());
+          this.elements.zooOverlay.addEventListener("click", (e) => {
+            if (e.target === this.elements.zooOverlay) this.closeZoo();
+          });
+          document.getElementById("zoo-buy-btn").addEventListener("click", () => this.toggleZooShop());
+          document.getElementById("zoo-expand-btn").addEventListener("click", () => this.expandZoo());
+
+          // Инициализация зоопарка
+          this.initZoo();
         }
 
         /**
@@ -1019,7 +2223,7 @@
               this.state.mood - this.config.decayRate.mood * deltaTime,
             );
           }
-
+          
           // Проверка на проигрыш
           if (
             this.state.hunger <= 0 ||
@@ -1029,9 +2233,12 @@
             this.gameOver();
             return;
           }
-
+          
           // Обновление UI
           this.updateUI();
+
+          // Обновление дохода зоопарка
+          this.updateZooIncome();
 
           // Продолжаем цикл
           this.gameLoopId = requestAnimationFrame(this.update);
@@ -1051,15 +2258,9 @@
           this.elements.energyValue.textContent = Math.round(this.state.energy);
           this.elements.moodValue.textContent = Math.round(this.state.mood);
 
-          // Обновление вида ёжика в зависимости от состояния
+          // Обновление вида ёжика - только если спит (применяем скин в update())
           if (this.state.isSleeping) {
-            this.elements.hedgehog.textContent = this.emojis.hedgehog.sleeping;
-          } else if (this.state.mood < 30) {
-            this.elements.hedgehog.textContent = this.emojis.hedgehog.sad;
-          } else if (this.state.mood > 70) {
-            this.elements.hedgehog.textContent = this.emojis.hedgehog.happy;
-          } else {
-            this.elements.hedgehog.textContent = this.emojis.hedgehog.normal;
+            this.elements.hedgehog.textContent = "😴";
           }
         }
 
@@ -1076,19 +2277,15 @@
           );
 
           // Анимация и визуальные эффекты
-          this.elements.hedgehog.textContent = this.emojis.hedgehog.eating;
           this.showPopupEmoji(this.elements.hedgehog, "🍎");
           this.animateBounce(this.elements.hedgehog);
 
           // Животные реагируют
           this.companionSpeak(0.7); // 70% шанс Yes
 
-          // Возврат к нормальному виду через 1 секунду
-          setTimeout(() => {
-            if (!this.state.isSleeping) {
-              this.updateUI();
-            }
-          }, 1000);
+          // Обновление прогресса квеста
+          this.updateQuestProgress(1);
+          this.checkMaxValueQuests();
         }
 
         /**
@@ -1104,10 +2301,6 @@
           );
 
           // Анимация всех персонажей
-          this.elements.hedgehog.textContent = this.emojis.hedgehog.happy;
-          this.elements.cat.textContent = this.emojis.cat.happy;
-          this.elements.dog.textContent = this.emojis.dog.excited;
-
           this.showPopupEmoji(this.elements.hedgehog, "🎾");
           this.animateBounce(this.elements.hedgehog);
           this.animateBounce(this.elements.cat);
@@ -1116,12 +2309,9 @@
           // Животные радуются - говорят Yes
           this.companionSpeak(0.9); // 90% шанс Yes
 
-          // Возврат к нормальному виду
-          setTimeout(() => {
-            if (!this.state.isSleeping) {
-              this.updateUI();
-            }
-          }, 1500);
+          // Обновление прогресса квеста
+          this.updateQuestProgress(1);
+          this.checkMaxValueQuests();
         }
 
         /**
@@ -1141,6 +2331,9 @@
 
           // Животные тоже засыпают
           this.companionSpeak(0.5); // 50/50
+
+          // Обновление прогресса квеста
+          this.updateQuestProgress(1);
 
           // Восстановление энергии во сне
           const restoreEnergy = () => {
@@ -1178,6 +2371,7 @@
           this.elements.nightOverlay.classList.remove("active");
           this.elements.btnSleep.classList.remove("sleeping");
           this.updateUI();
+          this.applySkins();
 
           // Кратковременная радость
           this.showPopupEmoji(this.elements.hedgehog, "🌟");
@@ -1205,6 +2399,9 @@
 
           // Животные слушают
           this.companionSpeak(0.6); // 60% шанс Yes
+
+          // Обновление прогресса квеста
+          this.updateQuestProgress(1);
 
           // Скрытие пузыря через 2 секунды
           setTimeout(() => {
@@ -1282,24 +2479,151 @@
         }
 
         /**
-         * Поведение второстепенных персонажей
+         * Поведение второстепенных персонажей (только анимация)
          */
         startCompanionBehavior() {
           setInterval(() => {
             if (this.state.isGameOver || this.state.isSleeping) return;
 
-            // Случайное изменение состояния кота
-            const catMoods = ["normal", "bored", "angry", "happy"];
-            const randomCatMood =
-              catMoods[Math.floor(Math.random() * catMoods.length)];
-            this.elements.cat.textContent = this.emojis.cat[randomCatMood];
-
-            // Случайное изменение состояния собаки
-            const dogMoods = ["normal", "excited"];
-            const randomDogMood =
-              dogMoods[Math.floor(Math.random() * dogMoods.length)];
-            this.elements.dog.textContent = this.emojis.dog[randomDogMood];
+            // Легкая анимация (подпрыгивание) - не меняем скин!
+            this.animateBounce(this.elements.cat);
+            this.animateBounce(this.elements.dog);
           }, 5000); // Каждые 5 секунд
+        }
+
+        /**
+         * Запуск системы квестов
+         */
+        startQuestSystem() {
+          // Сброс прогресса квестов
+          this.questSystem.progress = 0;
+          this.questSystem.currentQuest = null;
+          
+          // Генерируем первый квест
+          this.generateNewQuest();
+          
+          // Запускаем таймер для квестов типа "time"
+          this.questSystem.questTimer = setInterval(() => {
+            if (this.state.isGameOver) return;
+            
+            const quest = this.questSystem.currentQuest;
+            if (quest && quest.type === "time" && !this.state.isSleeping) {
+              this.questSystem.progress++;
+              this.updateQuestUI();
+              
+              if (this.questSystem.progress >= quest.target) {
+                this.completeQuest();
+              }
+            }
+          }, 1000);
+        }
+
+        /**
+         * Генерация нового квеста
+         */
+        generateNewQuest() {
+          // Выбираем случайный кquest
+          const randomIndex = Math.floor(Math.random() * this.quests.length);
+          this.questSystem.currentQuest = this.quests[randomIndex];
+          this.questSystem.progress = 0;
+          
+          // Показываем панель квестов
+          this.elements.questPanel.classList.add("active");
+          this.updateQuestUI();
+        }
+
+        /**
+         * Обновление UI квеста
+         */
+        updateQuestUI() {
+          const quest = this.questSystem.currentQuest;
+          if (!quest) return;
+          
+          this.elements.questText.textContent = quest.text;
+          const percent = Math.min(100, (this.questSystem.progress / quest.target) * 100);
+          this.elements.questProgressBar.style.width = `${percent}%`;
+          this.elements.questReward.textContent = `Награда: ${quest.rewardText}`;
+        }
+
+        /**
+         * Обновление прогресса квеста
+         */
+        updateQuestProgress(amount = 1) {
+          const quest = this.questSystem.currentQuest;
+          if (!quest || this.state.isGameOver) return;
+          
+          this.questSystem.progress += amount;
+          this.updateQuestUI();
+          
+          if (this.questSystem.progress >= quest.target) {
+            this.completeQuest();
+          }
+        }
+
+        /**
+         * Проверка квестов на максимальные значения
+         */
+        checkMaxValueQuests() {
+          const quest = this.questSystem.currentQuest;
+          if (!quest || this.state.isGameOver) return;
+          
+          let progress = 0;
+          
+          switch (quest.type) {
+            case "maxHunger":
+              progress = this.state.hunger;
+              break;
+            case "maxEnergy":
+              progress = this.state.energy;
+              break;
+            case "maxMood":
+              progress = this.state.mood;
+              break;
+            default:
+              return;
+          }
+          
+          this.questSystem.progress = progress;
+          this.updateQuestUI();
+          
+          if (this.questSystem.progress >= quest.target) {
+            this.completeQuest();
+          }
+        }
+
+        /**
+         * Завершение квеста
+         */
+        completeQuest() {
+          const quest = this.questSystem.currentQuest;
+          if (!quest) return;
+          
+          // Добавляем награду
+          this.questSystem.coins += quest.reward;
+          this.updateShopCoins();
+          
+          // Показываем уведомление
+          this.showReward(quest.reward, quest.rewardText);
+          
+          // Генерируем новый квест через небольшую паузу
+          setTimeout(() => {
+            this.generateNewQuest();
+          }, 2000);
+        }
+
+        /**
+         * Показ уведомления о награде
+         */
+        showReward(amount, text) {
+          this.elements.rewardNotification.textContent = text;
+          this.elements.rewardNotification.classList.add("show");
+          
+          // Анимация ёжика
+          this.animateBounce(this.elements.hedgehog);
+          
+          setTimeout(() => {
+            this.elements.rewardNotification.classList.remove("show");
+          }, 1500);
         }
 
         /**
@@ -1325,6 +2649,898 @@
           if (this.gameLoopId) {
             cancelAnimationFrame(this.gameLoopId);
           }
+        }
+
+        /**
+         * Открыть магазин
+         */
+        openShop() {
+          this.elements.shopOverlay.classList.add("show");
+          this.updateShopCoins();
+          this.renderShopItems();
+        }
+
+        /**
+         * Закрыть магазин
+         */
+        closeShop() {
+          this.elements.shopOverlay.classList.remove("show");
+        }
+
+        /**
+         * Обновить отображение монет в магазине
+         */
+        updateShopCoins() {
+          const coins = this.questSystem.coins;
+          this.elements.shopCoins.textContent = `🪙 ${coins}`;
+          this.elements.coinCount.textContent = `🪙 ${coins}`;
+          this.elements.totalCoins.textContent = coins;
+        }
+
+        /**
+         * Обновить табы магазина
+         */
+        updateShopTabs() {
+          document.querySelectorAll(".shop-tab").forEach((tab) => {
+            tab.classList.toggle("active", tab.dataset.character === this.currentShopTab);
+          });
+        }
+
+        /**
+         * Отобразить items магазина
+         */
+        renderShopItems() {
+          const container = this.elements.shopItems;
+          container.innerHTML = "";
+
+          const skins = this.skins[this.currentShopTab];
+
+          skins.forEach((skin) => {
+            const item = document.createElement("div");
+            item.className = "shop-item";
+
+            const isSelected = this.currentSkins[this.currentShopTab] === skin.id;
+            const isOwned = skin.owned || skin.price === 0;
+
+            if (isSelected) item.classList.add("selected");
+            if (isOwned) item.classList.add("owned");
+
+            item.innerHTML = `
+              <div class="shop-item-emoji">${skin.emoji}</div>
+              <div class="shop-item-name">${skin.name}</div>
+              <div class="shop-item-price ${isOwned ? "free" : ""}">
+                ${isOwned ? "✓ Куплено" : `🪙 ${skin.price}`}
+              </div>
+            `;
+
+            item.addEventListener("click", () => this.buyOrSelectSkin(skin));
+            container.appendChild(item);
+          });
+        }
+
+        /**
+         * Купить или выбрать скин
+         */
+        buyOrSelectSkin(skin) {
+          if (skin.owned || skin.price === 0) {
+            // Выбрать скин
+            this.currentSkins[this.currentShopTab] = skin.id;
+            this.applySkins();
+            this.renderShopItems();
+          } else {
+            // Попытаться купить
+            if (this.questSystem.coins >= skin.price) {
+              this.questSystem.coins -= skin.price;
+              skin.owned = true;
+              this.currentSkins[this.currentShopTab] = skin.id;
+              this.applySkins();
+              this.updateShopCoins();
+              this.renderShopItems();
+              this.showReward(0, `Куплено: ${skin.emoji}`);
+            } else {
+              // Недостаточно монет
+              this.showReward(0, "Недостаточно монет!");
+            }
+          }
+        }
+
+        /**
+         * Применить выбранные скины
+         */
+        applySkins() {
+          // Применяем скин ёжика (только если не спит)
+          if (!this.state.isSleeping) {
+            const hSkin = this.skins.hedgehog.find((s) => s.id === this.currentSkins.hedgehog);
+            if (hSkin) {
+              this.elements.hedgehog.textContent = hSkin.emoji;
+            }
+          }
+          
+          // Применяем скин кота
+          const cSkin = this.skins.cat.find((s) => s.id === this.currentSkins.cat);
+          if (cSkin) {
+            this.elements.cat.textContent = cSkin.emoji;
+          }
+          
+          // Применяем скин собаки
+          const dSkin = this.skins.dog.find((s) => s.id === this.currentSkins.dog);
+          if (dSkin) {
+            this.elements.dog.textContent = dSkin.emoji;
+          }
+          
+          // Применяем скин рыбок
+          const fSkin = this.skins.fish.find((s) => s.id === this.currentSkins.fish);
+          if (fSkin) {
+            this.elements.fish1.textContent = fSkin.emoji;
+            this.elements.fish2.textContent = fSkin.emoji;
+            this.elements.fish3.textContent = fSkin.emoji;
+          }
+        }
+
+        /**
+         * Открыть меню мини-игр
+         */
+        openMinigames() {
+          this.elements.minigameOverlay.classList.add("show");
+        }
+
+        /**
+         * Закрыть меню мини-игр
+         */
+        closeMinigames() {
+          this.elements.minigameOverlay.classList.remove("show");
+        }
+
+        /**
+         * Закрыть игровой процесс
+         */
+        closeGameplay() {
+          this.elements.gameplayOverlay.classList.remove("show");
+          if (this.minigameTimer) {
+            clearInterval(this.minigameTimer);
+            this.minigameTimer = null;
+          }
+        }
+
+        /**
+         * Начать мини-игру
+         */
+        startMinigame(game) {
+          this.currentMinigame = game;
+          this.minigameScore = 0;
+          this.minigameTimeLeft = 10;
+          
+          this.elements.gameplayTitle.textContent = {
+            clicker: "👆 Кликер",
+            memory: "🧠 Память",
+            catch: "🦋 Поймай"
+          }[game];
+          
+          this.elements.gameplayScore.textContent = "0";
+          this.elements.gameplayTimer.textContent = "10";
+          this.elements.gameplayContent.innerHTML = '<div style="font-size: 60px;">🎮</div>';
+          this.elements.gameplayStart.style.display = "block";
+          this.elements.gameplayOverlay.classList.add("show");
+          this.closeMinigames();
+        }
+
+        /**
+         * Запустить игровой процесс
+         */
+        runMinigame() {
+          this.elements.gameplayStart.style.display = "none";
+          this.minigameScore = 0;
+          this.minigameTimeLeft = 10;
+          this.elements.gameplayScore.textContent = "0";
+          this.elements.gameplayTimer.textContent = "10";
+
+          // Таймер
+          this.minigameTimer = setInterval(() => {
+            this.minigameTimeLeft--;
+            this.elements.gameplayTimer.textContent = this.minigameTimeLeft;
+            
+            if (this.minigameTimeLeft <= 0) {
+              this.endMinigame();
+            }
+          }, 1000);
+
+          // Запуск конкретной игры
+          if (this.currentMinigame === "clicker") {
+            this.runClickerGame();
+          } else if (this.currentMinigame === "memory") {
+            this.runMemoryGame();
+          } else if (this.currentMinigame === "catch") {
+            this.runCatchGame();
+          }
+        }
+
+        /**
+         * Игра: Кликер
+         */
+        runClickerGame() {
+          const emojis = ["🦔", "🐱", "🐶", "🐠", "⭐", "💎", "🎯", "🔥"];
+          this.elements.gameplayContent.innerHTML = "";
+          
+          const target = document.createElement("div");
+          target.className = "clicker-target";
+          target.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          target.onclick = () => {
+            this.minigameScore += Math.floor(Math.random() * 5) + 1;
+            this.elements.gameplayScore.textContent = this.minigameScore;
+            target.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          };
+          this.elements.gameplayContent.appendChild(target);
+        }
+
+        /**
+         * Игра: Память
+         */
+        runMemoryGame() {
+          const emojiSet = ["🦔", "🐱", "🐶", "🐠", "⭐", "💎", "🎯", "🔥"];
+          const cards = [...emojiSet, ...emojiSet];
+          
+          // Перемешивание
+          for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+          }
+          
+          this.memoryFlipped = [];
+          this.memoryMatched = 0;
+          
+          this.elements.gameplayContent.innerHTML = '<div class="memory-grid"></div>';
+          const grid = this.elements.gameplayContent.querySelector(".memory-grid");
+          
+          cards.forEach((emoji, index) => {
+            const card = document.createElement("div");
+            card.className = "memory-card";
+            card.dataset.emoji = emoji;
+            card.dataset.index = index;
+            card.textContent = "?";
+            card.onclick = () => this.flipCard(card, emoji);
+            grid.appendChild(card);
+          });
+        }
+
+        /**
+         * Переворот карты в игре память
+         */
+        flipCard(card, emoji) {
+          if (this.memoryFlipped.length >= 2 || card.classList.contains("flipped") || card.classList.contains("matched")) {
+            return;
+          }
+          
+          card.classList.add("flipped");
+          card.textContent = emoji;
+          this.memoryFlipped.push({ card, emoji });
+          
+          if (this.memoryFlipped.length === 2) {
+            const [first, second] = this.memoryFlipped;
+            
+            if (first.emoji === second.emoji) {
+              first.card.classList.add("matched");
+              second.card.classList.add("matched");
+              this.memoryMatched++;
+              this.minigameScore += 10;
+              this.elements.gameplayScore.textContent = this.minigameScore;
+              this.memoryFlipped = [];
+              
+              if (this.memoryMatched === 8) {
+                this.minigameScore += 50; // Бонус за победу
+                this.elements.gameplayScore.textContent = this.minigameScore;
+              }
+            } else {
+              setTimeout(() => {
+                first.card.classList.remove("flipped");
+                first.card.textContent = "?";
+                second.card.classList.remove("flipped");
+                second.card.textContent = "?";
+                this.memoryFlipped = [];
+              }, 500);
+            }
+          }
+        }
+
+        /**
+         * Игра: Поймай
+         */
+        runCatchGame() {
+          this.elements.gameplayContent.innerHTML = "";
+          this.catchTargets = [];
+          const emojis = ["🦋", "🐝", "🦅", "🐦", "🕊️"];
+          
+          this.catchInterval = setInterval(() => {
+            if (this.minigameTimeLeft <= 0) return;
+            
+            const target = document.createElement("div");
+            target.className = "catch-target";
+            target.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            target.style.left = Math.random() * 200 + "px";
+            target.style.top = Math.random() * 150 + "px";
+            
+            target.onclick = () => {
+              this.minigameScore += 5;
+              this.elements.gameplayScore.textContent = this.minigameScore;
+              target.remove();
+            };
+            
+            this.elements.gameplayContent.appendChild(target);
+            
+            // Удалить через 1.5 секунды
+            setTimeout(() => {
+              if (target.parentNode) target.remove();
+            }, 1500);
+          }, 600);
+        }
+
+        /**
+         * Завершить мини-игру
+         */
+        endMinigame() {
+          clearInterval(this.minigameTimer);
+          if (this.catchInterval) {
+            clearInterval(this.catchInterval);
+            this.catchInterval = null;
+          }
+          
+          const reward = Math.max(5, this.minigameScore);
+          this.questSystem.coins += reward;
+          this.updateShopCoins();
+          
+          this.elements.gameplayContent.innerHTML = `<div style="text-align: center;">
+            <div style="font-size: 60px;">🎉</div>
+            <div style="font-size: 24px;">Счёт: ${this.minigameScore}</div>
+            <div style="font-size: 28px; color: #f39c12;">+${reward} 🪙</div>
+          </div>`;
+          
+          setTimeout(() => {
+            this.closeGameplay();
+          }, 2000);
+        }
+
+        /**
+         * Открыть экран выбора персонажа для выживания
+         */
+        openSurvivalSelect() {
+          this.elements.survivalSelectOverlay.classList.add("show");
+        }
+
+        /**
+         * Закрыть экран выбора
+         */
+        closeSurvivalSelect() {
+          this.elements.survivalSelectOverlay.classList.remove("show");
+        }
+
+        /**
+         * Отрендерить персонажей для выбора
+         */
+        renderSurvivalCharacters() {
+          const container = this.elements.survivalCharacters;
+          container.innerHTML = "";
+          
+          const characters = [
+            { id: "h1", emoji: "🦔", name: "Ёж", type: "hedgehog" },
+            { id: "c1", emoji: "🐱", name: "Кот", type: "cat" },
+            { id: "d1", emoji: "🐶", name: "Пёс", type: "dog" },
+            { id: "f1", emoji: "🐠", name: "Рыба", type: "fish" },
+          ];
+          
+          characters.forEach((char) => {
+            const div = document.createElement("div");
+            div.className = "survival-char";
+            div.innerHTML = `
+              <div class="survival-char-emoji">${char.emoji}</div>
+              <div class="survival-char-name">${char.name}</div>
+            `;
+            div.onclick = () => this.startSurvival(char);
+            container.appendChild(div);
+          });
+        }
+
+        /**
+         * Начать игру выживания
+         */
+        startSurvival(character) {
+          this.survivalCharacter = character;
+          this.survivalHealth = 100;
+          this.survivalScore = 0;
+          this.survivalTime = 0;
+          this.survivalPlayerX = 50;
+          this.survivalPlayerY = 60;
+          this.survivalVelocityY = 0;
+          this.survivalIsJumping = false;
+          this.survivalMoveLeft = false;
+          this.survivalMoveRight = false;
+          this.survivalEnemies = [];
+          this.survivalFoods = [];
+          this.survivalGameOver = false;
+          
+          this.closeSurvivalSelect();
+          this.elements.survivalGameOverlay.classList.add("show");
+          this.elements.survivalHealth.textContent = "100";
+          this.elements.survivalScore.textContent = "0";
+          this.elements.survivalTime.textContent = "0:00";
+          
+          this.renderSurvivalGame();
+          this.startSurvivalGameLoop();
+        }
+
+        /**
+         * Рендер игровой области выживания
+         */
+        renderSurvivalGame() {
+          const area = this.elements.survivalGameArea;
+          area.innerHTML = `
+            <div class="survival-ground"></div>
+            <div class="survival-player" id="survival-player">${this.survivalCharacter.emoji}</div>
+          `;
+          
+          this.survivalPlayerEl = document.getElementById("survival-player");
+        }
+
+        /**
+         * Запустить игровой цикл выживания
+         */
+        startSurvivalGameLoop() {
+          this.survivalInterval = setInterval(() => {
+            if (this.survivalGameOver) return;
+            
+            // Обновление времени
+            this.survivalTime++;
+            const minutes = Math.floor(this.survivalTime / 60);
+            const seconds = this.survivalTime % 60;
+            this.elements.survivalTime.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+            
+            // Движение игрока
+            if (this.survivalMoveLeft) {
+              this.survivalPlayerX = Math.max(0, this.survivalPlayerX - 3);
+            }
+            if (this.survivalMoveRight) {
+              this.survivalPlayerX = Math.min(90, this.survivalPlayerX + 3);
+            }
+            
+            // Гравитация и прыжок
+            if (this.survivalIsJumping || this.survivalPlayerY > 60) {
+              this.survivalVelocityY -= 2;
+              this.survivalPlayerY += this.survivalVelocityY;
+              
+              if (this.survivalPlayerY <= 60) {
+                this.survivalPlayerY = 60;
+                this.survivalVelocityY = 0;
+                this.survivalIsJumping = false;
+              }
+            }
+            
+            // Обновление позиции игрока
+            if (this.survivalPlayerEl) {
+              this.survivalPlayerEl.style.left = this.survivalPlayerX + "%";
+              this.survivalPlayerEl.style.bottom = (this.survivalPlayerY + 60) + "px";
+            }
+            
+            // Спавн врагов
+            if (Math.random() < 0.02) {
+              this.spawnSurvivalEnemy();
+            }
+            
+            // Спавн еды
+            if (Math.random() < 0.03) {
+              this.spawnSurvivalFood();
+            }
+            
+            // Обновление врагов
+            this.updateSurvivalEnemies();
+            
+            // Обновление еды
+            this.updateSurvivalFoods();
+            
+            // Проверка здоровья
+            if (this.survivalHealth <= 0) {
+              this.endSurvivalGame();
+            }
+            
+            this.elements.survivalHealth.textContent = Math.max(0, Math.floor(this.survivalHealth));
+            this.elements.survivalScore.textContent = this.survivalScore;
+          }, 50);
+        }
+
+        /**
+         * Прыжок
+         */
+        survivalJump() {
+          if (!this.survivalIsJumping && this.survivalPlayerY <= 60) {
+            this.survivalIsJumping = true;
+            this.survivalVelocityY = 15;
+          }
+        }
+
+        /**
+         * Спавн врага
+         */
+        spawnSurvivalEnemy() {
+          const enemies = ["🐍", "🦂", "🕷️", "🐺", "🦅", "🦈"];
+          const enemy = {
+            emoji: enemies[Math.floor(Math.random() * enemies.length)],
+            x: Math.random() < 0.5 ? -10 : 110,
+            y: 60 + Math.random() * 20,
+            speed: (Math.random() * 2 + 1) * (Math.random() < 0.5 ? 1 : -1),
+            element: null,
+          };
+
+          const el = document.createElement("div");
+          el.className = "survival-enemy";
+          el.textContent = enemy.emoji;
+          el.style.left = enemy.x + "%";
+          el.style.bottom = (enemy.y + 60) + "px";
+          this.elements.survivalGameArea.appendChild(el);
+          enemy.element = el;
+          
+          this.survivalEnemies.push(enemy);
+        }
+
+        /**
+         * Обновить врагов
+         */
+        updateSurvivalEnemies() {
+          const area = this.elements.survivalGameArea;
+          
+          this.survivalEnemies = this.survivalEnemies.filter((enemy) => {
+            enemy.x += enemy.speed;
+            
+            if (enemy.element) {
+              enemy.element.style.left = enemy.x + "%";
+              enemy.element.style.bottom = (enemy.y + 60) + "px";
+            }
+            
+            // Проверка коллизии с игроком
+            const playerBox = {
+              x: this.survivalPlayerX,
+              y: this.survivalPlayerY,
+              width: 5,
+              height: 5,
+            };
+            const enemyBox = {
+              x: enemy.x,
+              y: enemy.y,
+              width: 5,
+              height: 5,
+            };
+            
+            if (this.checkCollision(playerBox, enemyBox)) {
+              this.survivalHealth -= 15;
+              if (enemy.element) enemy.element.remove();
+              return false;
+            }
+            
+            // Удаление если далеко
+            if (enemy.x < -20 || enemy.x > 120) {
+              if (enemy.element) enemy.element.remove();
+              return false;
+            }
+            
+            return true;
+          });
+        }
+
+        /**
+         * Спавн еды
+         */
+        spawnSurvivalFood() {
+          const foods = ["🍎", "🍊", "🍇", "🍓", "🥕", "🌮", "🍖", "💎"];
+          const food = {
+            emoji: foods[Math.floor(Math.random() * foods.length)],
+            x: Math.random() * 80 + 10,
+            y: Math.random() * 30 + 30,
+            element: null,
+          };
+          
+          const el = document.createElement("div");
+          el.className = "survival-food";
+          el.textContent = food.emoji;
+          el.style.left = food.x + "%";
+          el.style.bottom = (food.y + 60) + "px";
+          this.elements.survivalGameArea.appendChild(el);
+          food.element = el;
+          
+          this.survivalFoods.push(food);
+        }
+
+        /**
+         * Обновить еду
+         */
+        updateSurvivalFoods() {
+          this.survivalFoods = this.survivalFoods.filter((food) => {
+            // Проверка коллизии с игроком
+            const playerBox = {
+              x: this.survivalPlayerX,
+              y: this.survivalPlayerY,
+              width: 5,
+              height: 5,
+            };
+            const foodBox = {
+              x: food.x,
+              y: food.y,
+              width: 3,
+              height: 3,
+            };
+            
+            if (this.checkCollision(playerBox, foodBox)) {
+              // Проверка - это монета или еда
+              if (food.emoji === "💎") {
+                this.survivalScore += 50;
+              } else {
+                this.survivalHealth = Math.min(100, this.survivalHealth + 15);
+                this.survivalScore += 10;
+              }
+              if (food.element) food.element.remove();
+              return false;
+            }
+            
+            // Удаление если упала
+            if (food.y < 0) {
+              if (food.element) food.element.remove();
+              return false;
+            }
+            
+            return true;
+          });
+        }
+
+        /**
+         * Проверка коллизии
+         */
+        checkCollision(box1, box2) {
+          return Math.abs(box1.x - box2.x) < (box1.width + box2.width) / 2 &&
+                 Math.abs(box1.y - box2.y) < (box1.height + box2.height) / 2;
+        }
+
+        /**
+         * Завершить игру выживания
+         */
+        endSurvivalGame() {
+          this.survivalGameOver = true;
+          clearInterval(this.survivalInterval);
+          
+          // Добавить награду
+          const reward = Math.floor(this.survivalScore / 10);
+          this.questSystem.coins += reward;
+          this.updateShopCoins();
+          
+          // Показать экран проигрыша
+          const area = this.elements.survivalGameArea;
+          area.innerHTML += `
+            <div class="survival-game-over">
+              <h2>💀 Игра окончена</h2>
+              <p>Ты продержался: ${Math.floor(this.survivalTime / 60)}:${(this.survivalTime % 60).toString().padStart(2, "0")}</p>
+              <p class="score-final">Счёт: ${this.survivalScore}</p>
+              <p style="color: #f1c40f; font-size: 24px;">+${reward} 🪙</p>
+              <button class="gameplay-start" onclick="document.getElementById('survival-game-overlay').classList.remove('show')" style="margin-top: 20px; padding: 15px 30px; font-size: 18px;">Выход</button>
+            </div>
+          `;
+        }
+
+        /**
+         * Закрыть игру выживания
+         */
+        closeSurvivalGame() {
+          this.survivalGameOver = true;
+          clearInterval(this.survivalInterval);
+          this.elements.survivalGameOverlay.classList.remove("show");
+          
+          // Очистить область
+          const area = this.elements.survivalGameArea;
+          area.querySelectorAll(".survival-enemy, .survival-food, .survival-player, .survival-ground").forEach(el => el.remove());
+        }
+
+        /**
+         * Инициализация зоопарка
+         */
+        initZoo() {
+          this.zoo = {
+            level: 1,
+            maxAnimals: 5,
+            expandCost: 100,
+            animals: [],
+            incomePerAnimal: 2, // монет в минуту
+            lastIncomeTime: Date.now(),
+          };
+        }
+
+        /**
+         * Открыть зоопарк
+         */
+        openZoo() {
+          this.elements.zooOverlay.classList.add("show");
+          this.updateZooUI();
+          this.renderZooArea();
+        }
+
+        /**
+         * Закрыть зоопарк
+         */
+        closeZoo() {
+          this.elements.zooOverlay.classList.remove("show");
+          this.elements.zooShop.style.display = "none";
+        }
+
+        /**
+         * Обновить UI зоопарка
+         */
+        updateZooUI() {
+          this.elements.zooCoins.textContent = this.questSystem.coins;
+          this.elements.zooLevel.textContent = this.zoo.level;
+          this.elements.zooAnimalsCount.textContent = this.zoo.animals.length;
+          this.elements.zooMaxAnimals.textContent = this.zoo.maxAnimals;
+          this.elements.zooIncome.textContent = this.zoo.animals.length * this.zoo.incomePerAnimal;
+          this.elements.zooExpandCost.textContent = this.zoo.expandCost;
+
+          // Обновление кнопки расширения
+          const expandBtn = document.getElementById("zoo-expand-btn");
+          expandBtn.disabled = this.questSystem.coins < this.zoo.expandCost || this.zoo.level >= 10;
+        }
+
+        /**
+         * Рендер площадки зоопарка
+         */
+        renderZooArea() {
+          const area = this.elements.zooArea;
+          area.innerHTML = "";
+
+          for (let i = 0; i < this.zoo.maxAnimals; i++) {
+            const pen = document.createElement("div");
+            pen.className = "zoo-pen";
+
+            if (i < this.zoo.animals.length) {
+              const animal = this.zoo.animals[i];
+              pen.innerHTML = `
+                <div class="zoo-pen-animal" onclick="window.game.feedZooAnimal(${i})">${animal.emoji}</div>
+                <div class="zoo-pen-name">${animal.name}</div>
+                <div class="zoo-pen-hunger">
+                  <div class="zoo-pen-hunger-bar" style="width: ${animal.hunger}%"></div>
+                </div>
+                <button class="zoo-pen-btn" onclick="window.game.feedZooAnimal(${i})">🍎</button>
+              `;
+            } else {
+              pen.className = "zoo-pen empty";
+              pen.innerHTML = "<div style='font-size: 30px; opacity: 0.3;'>➕</div>";
+            }
+
+            area.appendChild(pen);
+          }
+        }
+
+        /**
+         * Покорнить животное в зоопарке
+         */
+        feedZooAnimal(index) {
+          if (index >= this.zoo.animals.length) return;
+
+          const animal = this.zoo.animals[index];
+          animal.hunger = Math.min(100, animal.hunger + 30);
+          this.renderZooArea();
+        }
+
+        /**
+         * Переключить магазин животных
+         */
+        toggleZooShop() {
+          const shop = this.elements.zooShop;
+          if (shop.style.display === "none") {
+            shop.style.display = "block";
+            this.renderZooShop();
+          } else {
+            shop.style.display = "none";
+          }
+        }
+
+        /**
+         * Рендер магазина животных
+         */
+        renderZooShop() {
+          const list = this.elements.zooShopList;
+          list.innerHTML = "";
+
+          const shopAnimals = [
+            { emoji: "🦁", name: "Лев", price: 200, income: 15 },
+            { emoji: "🐘", name: "Слон", price: 300, income: 25 },
+            { emoji: "🦒", name: "Жираф", price: 250, income: 20 },
+            { emoji: "🦓", name: "Зебра", price: 150, income: 12 },
+            { emoji: "🐼", name: "Панда", price: 180, income: 14 },
+            { emoji: "🦛", name: "Бегемот", price: 220, income: 18 },
+            { emoji: "🐒", name: "Обезьяна", price: 100, income: 8 },
+            { emoji: "🦜", name: "Попугай", price: 80, income: 6 },
+            { emoji: "🐧", name: "Пингвин", price: 120, income: 10 },
+            { emoji: "🐨", name: "Коала", price: 160, income: 13 },
+            { emoji: "🦥", name: "Ленивец", price: 140, income: 11 },
+            { emoji: "🦦", name: "Енот", price: 90, income: 7 },
+          ];
+
+          shopAnimals.forEach((animal, index) => {
+            const item = document.createElement("div");
+            item.className = "zoo-shop-item";
+            item.innerHTML = `
+              <div class="zoo-shop-emoji">${animal.emoji}</div>
+              <div class="zoo-shop-name">${animal.name}</div>
+              <div class="zoo-shop-price">🪙 ${animal.price}</div>
+              <div class="zoo-shop-income">+${animal.income}/мин</div>
+            `;
+            item.onclick = () => this.buyZooAnimal(animal, index);
+            list.appendChild(item);
+          });
+        }
+
+        /**
+         * Купить животное в зоопарк
+         */
+        buyZooAnimal(animal, index) {
+          if (this.zoo.animals.length >= this.zoo.maxAnimals) {
+            this.showReward(0, "Зоопарк полон! Расширьте территорию.");
+            return;
+          }
+
+          if (this.questSystem.coins < animal.price) {
+            this.showReward(0, "Недостаточно монет!");
+            return;
+          }
+
+          this.questSystem.coins -= animal.price;
+          this.zoo.animals.push({
+            emoji: animal.emoji,
+            name: animal.name,
+            hunger: 100,
+            income: animal.income,
+          });
+
+          this.updateShopCoins();
+          this.updateZooUI();
+          this.renderZooArea();
+          this.elements.zooShop.style.display = "none";
+        }
+
+        /**
+         * Расширить зоопарк
+         */
+        expandZoo() {
+          if (this.questSystem.coins < this.zoo.expandCost) {
+            this.showReward(0, "Недостаточно монет!");
+            return;
+          }
+
+          if (this.zoo.level >= 10) {
+            this.showReward(0, "Максимальный уровень!");
+            return;
+          }
+
+          this.questSystem.coins -= this.zoo.expandCost;
+          this.zoo.level++;
+          this.zoo.maxAnimals += 3;
+          this.zoo.expandCost = Math.floor(this.zoo.expandCost * 1.5);
+
+          this.updateShopCoins();
+          this.updateZooUI();
+          this.renderZooArea();
+        }
+
+        /**
+         * Обновление дохода зоопарка (вызывается в игровом цикле)
+         */
+        updateZooIncome() {
+          if (this.zoo.animals.length === 0) return;
+
+          const now = Date.now();
+          const elapsed = (now - this.zoo.lastIncomeTime) / 1000; // в секундах
+
+          if (elapsed >= 60) { // каждую минуту
+            const income = this.zoo.animals.length * this.zoo.incomePerAnimal;
+            this.questSystem.coins += income;
+            this.zoo.lastIncomeTime = now;
+            this.updateShopCoins();
+          }
+
+          // Уменьшение голода животных
+          this.zoo.animals.forEach((animal) => {
+            animal.hunger = Math.max(0, animal.hunger - 0.1);
+          });
         }
 
         /**
@@ -1355,16 +3571,49 @@
             this.sleepTimer = null;
           }
 
+          // Сброс системы квестов
+          this.questSystem.progress = 0;
+          this.questSystem.currentQuest = null;
+          this.elements.questPanel.classList.remove("active");
+          this.generateNewQuest();
+
           // Перезапуск
           this.updateUI();
+          this.applySkins();
+          this.updateShopCoins();
           this.gameLoopId = requestAnimationFrame(this.update);
         }
       }
 
       // Запуск игры при загрузке страницы
       window.addEventListener("DOMContentLoaded", () => {
-        new Game();
+        window.game = new Game();
       });
     </script>
+
+        <!-- Режим Зоопарк -->
+        <div class="zoo-overlay" id="zoo-overlay">
+            <div class="zoo-panel">
+                <div class="zoo-header">
+                    <h2>🏰 Мой Зоопарк</h2>
+                    <div class="zoo-coins">🪙 <span id="zoo-coins">0</span></div>
+                    <button class="zoo-close" id="zoo-close">✕</button>
+                </div>
+                <div class="zoo-stats">
+                    <div class="zoo-stat">🏞️ Уровень: <span id="zoo-level">1</span></div>
+                    <div class="zoo-stat">👥 Животных: <span id="zoo-animals-count">0</span>/<span id="zoo-max-animals">5</span></div>
+                    <div class="zoo-stat">💰 Доход: <span id="zoo-income">0</span>/мин</div>
+                </div>
+                <div class="zoo-actions">
+                    <button class="zoo-btn" id="zoo-buy-btn">🛒 Купить животное</button>
+                    <button class="zoo-btn" id="zoo-expand-btn">🔨 Расширить (+3 места) - <span id="zoo-expand-cost">100</span>🪙</button>
+                </div>
+                <div class="zoo-area" id="zoo-area"></div>
+                <div class="zoo-shop" id="zoo-shop" style="display: none;">
+                    <h3>🛒 Магазин животных</h3>
+                    <div class="zoo-shop-list" id="zoo-shop-list"></div>
+                </div>
+            </div>
+        </div>
   </body>
 </html>
